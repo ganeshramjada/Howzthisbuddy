@@ -58,6 +58,8 @@ import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
 public class HBHomeActivity extends Activity implements HBNotifier{
 
 	
+	
+	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
