@@ -82,7 +82,7 @@
                 android:id="@+id/list_opinion_received_detail_no_response"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-        </RelativeLayout>
+        </RelativeLayout>
         -->
 
         <android.support.v4.view.ViewPager

@@ -51,6 +51,8 @@ public class AppUtilities {
 	public static String response = null;
 	public final static int GET = 1;
 	public final static int POST = 2;
+	public final static String SENDER_ID = "24397121204";
+	
 
 	public AppUtilities(Context c) {
 		this._context = c;

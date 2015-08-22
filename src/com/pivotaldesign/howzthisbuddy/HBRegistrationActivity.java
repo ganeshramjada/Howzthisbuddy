@@ -4,21 +4,9 @@
 package com.pivotaldesign.howzthisbuddy;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
-
-import com.google.gson.Gson;
-import com.pivotaldesign.howzthisbuddy.application.HBApplication;
-import com.pivotaldesign.howzthisbuddy.model.HBConstants;
-import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
-import com.pivotaldesign.howzthisbuddy.util.CheckInternet;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -42,6 +30,14 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gcm.GCMRegistrar;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.gson.Gson;
+import com.pivotaldesign.howzthisbuddy.application.HBApplication;
+import com.pivotaldesign.howzthisbuddy.model.HBConstants;
+import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
+import com.pivotaldesign.howzthisbuddy.util.CheckInternet;
 
 /**
  * @author Satish Kolawale
@@ -80,11 +76,20 @@ public class HBRegistrationActivity extends Activity {
 	
 	private SharedPreferences hbr_sp_loginprefs;
 	private SharedPreferences.Editor hbr_spe_loginprefs_editor;
+	
+	// GCM Implementation
+	GoogleCloudMessaging gcm;
+	Context context;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_registration);
+		GCMRegistrar.checkDevice(this);
+		GCMRegistrar.checkManifest(this);
+		gcm = GoogleCloudMessaging.getInstance(this);
+		
 		
 		getActionBar().hide();
 		checkInternet=new CheckInternet(getApplicationContext());
@@ -244,6 +249,7 @@ public class HBRegistrationActivity extends Activity {
 
 		@Override
 		protected String doInBackground(String... params) {
+			
 			gson_reg_req = new Gson();
 		    String reg_params = gson_reg_req.toJson(hbr_hm_reg_req_params);
 		    hbr_str_reg_resp_otprequest=au.makeRequeststatusline(HBConstants.reg_req, reg_params);
@@ -276,10 +282,30 @@ public class HBRegistrationActivity extends Activity {
 
 		@Override
 		protected String doInBackground(String... params) {
+			String registrationId = null;
+			String msg;
+			if (gcm == null) {
+				gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+			}
+			try {
+				registrationId = gcm.register(AppUtilities.SENDER_ID);
+				Log.d("RegisterActivity", "registerInBackground - regId: "
+						+ registrationId);
+				
+			} catch (IOException ex) {
+				 msg = "Error :" + ex.getMessage();
+				Log.d("RegisterActivity", "Error: " + msg);
+				ex.printStackTrace();
+			}
+			
 			hbr_hm_otp_req_params.put("phoneNumber", hbr_tv_disp_phone_number.getText().toString().replace("+", ""));
 			hbr_hm_otp_req_params.put("otpCode", hbr_et_verification_code.getText().toString());
+			hbr_hm_otp_req_params.put("gcmRegistrationID", registrationId);
+			
+			
+			/*
 			hbr_hm_otp_req_params.put("gcmRegistrationID", "123456789");
-
+			*/
 			gson_otp_req=new Gson();
 			String otp_params=gson_otp_req.toJson(hbr_hm_otp_req_params);
 			
