@@ -143,7 +143,6 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 				 
 				invalidateOptionsMenu();
 			}
-
 			public void onDrawerOpened(View drawerView) {
 				//getActionBar().setTitle(mDrawerTitle);
 				// calling onPrepareOptionsMenu() to hide action bar icons
