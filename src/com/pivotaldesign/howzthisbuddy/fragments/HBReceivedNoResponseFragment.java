@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.pivotaldesign.howzthisbuddy.R;
 import com.pivotaldesign.howzthisbuddy.adapter.HBOpinionReceivedNoResponseAdapter;
+import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
 
 /**
  * @author Satish Kolawale
@@ -20,7 +21,8 @@ import com.pivotaldesign.howzthisbuddy.adapter.HBOpinionReceivedNoResponseAdapte
 public class HBReceivedNoResponseFragment extends Fragment {
 
 	private ListView _listNoResponse = null;	 
-	HBReceivedFragment hbrf=new HBReceivedFragment();
+	private HBReceivedFragment hbrf=new HBReceivedFragment();
+	private AppUtilities au=new AppUtilities(getActivity());
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
  
@@ -29,6 +31,10 @@ public class HBReceivedNoResponseFragment extends Fragment {
 		
 		String contacts[] = new String[hbrf.al_opinionrespondedpendinglist1.size()];
 		for (int index = 0; index < contacts.length; index++) {
+			/*String name=au.getContactName(getActivity(), ""+hbrf.al_opinionrespondedpendinglist1.get(index).getResponsePhoneNumber());
+			if(name.equalsIgnoreCase(""+hbrf.al_opinionrespondedpendinglist1.get(index).getResponsePhoneNumber())){
+				
+			}*/
 			contacts[index] = ""+hbrf.al_opinionrespondedpendinglist1.get(index).getResponsePhoneNumber();
 		}
 		

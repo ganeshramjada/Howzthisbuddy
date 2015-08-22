@@ -22,7 +22,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
-class ImageCompressionAsyncTask extends AsyncTask<String, Void, String>{
+public class ImageCompressionAsyncTask extends AsyncTask<String, Void, String>{
 	private boolean frmGallery;
 	Context c;
 	AppUtilities au=new AppUtilities(c);

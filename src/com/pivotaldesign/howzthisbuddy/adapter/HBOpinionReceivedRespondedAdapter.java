@@ -80,6 +80,13 @@ public class HBOpinionReceivedRespondedAdapter extends ArrayAdapter<HBOpinionRec
 		if(holder.txtDate != null) {
 			holder.txtDate.setText("" + _dateFormat.format(responded.getDate()));
 		}
+		if(responded.getRespondedStatus()==1){
+			holder.imgStatus.setImageResource(R.drawable.small_like);
+		}else if(responded.getRespondedStatus()==2){
+			holder.imgStatus.setImageResource(R.drawable.small_not_sure);
+		}else if(responded.getRespondedStatus()==3){
+			holder.imgStatus.setImageResource(R.drawable.small_do_not_like);
+		}
 		
 		return convertView;
 	}

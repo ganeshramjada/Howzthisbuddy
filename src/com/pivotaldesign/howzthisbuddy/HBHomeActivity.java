@@ -6,36 +6,9 @@ package com.pivotaldesign.howzthisbuddy;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
-
 import com.pivotaldesign.howzthisbuddy.adapter.HBDrawerListAdapter;
 import com.pivotaldesign.howzthisbuddy.fragments.HBAboutFragment;
 import com.pivotaldesign.howzthisbuddy.fragments.HBGivenFragment;
@@ -50,6 +23,34 @@ import com.pivotaldesign.howzthisbuddy.model.HBConstants;
 import com.pivotaldesign.howzthisbuddy.model.HBDrawerItem;
 import com.pivotaldesign.howzthisbuddy.model.HBNotifier;
 import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
+import android.app.ActionBar;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.ContactsContract;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * @author Satish Kolawale
@@ -57,7 +58,6 @@ import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
  */
 public class HBHomeActivity extends Activity implements HBNotifier{
 
-	
 	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -142,6 +142,7 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 				 
 				invalidateOptionsMenu();
 			}
+
 			public void onDrawerOpened(View drawerView) {
 				//getActionBar().setTitle(mDrawerTitle);
 				// calling onPrepareOptionsMenu() to hide action bar icons
@@ -216,7 +217,7 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 				fragment = new HBGivenFragment(this);
 				break;
 			case 3:
-				fragment = new HBResponseFragment();
+				fragment = new HBResponseFragment(this);
 				break;
 			case 4:
 				fragment = new HBProfileFragment();

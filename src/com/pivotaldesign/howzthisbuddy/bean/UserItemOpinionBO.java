@@ -12,7 +12,7 @@ public class UserItemOpinionBO extends HowZThisBuddyBaseBO {
 	private ItemBO itemBO;
 	private OpinionBO opinionBO;
 	private long requestPhoneNumber;
-	private List<Long> responsePhoneNumber;
+	private String responsePhoneNumber;
 	private ItemSelfieDetailsBO itemSelfieDetailsBO;
 
 	public ItemBO getItemBO() {
@@ -39,11 +39,11 @@ public class UserItemOpinionBO extends HowZThisBuddyBaseBO {
 		this.requestPhoneNumber = requestPhoneNumber;
 	}
 
-public List<Long> getResponsePhoneNumber() {
+public String getResponsePhoneNumber() {
 		return responsePhoneNumber;
 	}
 
-	public void setResponsePhoneNumber(List<Long> responsePhoneNumber) {
+	public void setResponsePhoneNumber(String responsePhoneNumber) {
 		this.responsePhoneNumber = responsePhoneNumber;
 	}
 

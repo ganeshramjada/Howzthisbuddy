@@ -13,7 +13,13 @@ public class HBOpinionReceivedDetail {
 	
 	private String respondedBuddyName = null;
 	private Date date = null;
-	private int respondedStatus = 0;
+	private long respondedStatus = 0;
+	public long getRespondedStatus() {
+		return respondedStatus;
+	}
+	public void setRespondedStatus(long respondedStatus) {
+		this.respondedStatus = respondedStatus;
+	}
 	private String description = null;
 	
 	
@@ -44,15 +50,15 @@ public class HBOpinionReceivedDetail {
 	/**
 	 * @return the respondedStatus
 	 */
-	public int getRespondedStatus() {
+	/*public int getRespondedStatus() {
 		return respondedStatus;
 	}
-	/**
-	 * @param respondedStatus the respondedStatus to set
-	 */
-	public void setRespondedStatus(int respondedStatus) {
-		this.respondedStatus = respondedStatus;
-	}
+	*//**
+	 * @param l the respondedStatus to set
+	 *//*
+	public void setRespondedStatus(long l) {
+		this.respondedStatus = l;
+	}*/
 	/**
 	 * @return the description
 	 */

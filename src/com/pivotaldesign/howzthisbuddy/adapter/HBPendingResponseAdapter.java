@@ -58,12 +58,21 @@ public class HBPendingResponseAdapter extends ArrayAdapter<HBGivenResponse> {
 		else
 			holder = (ViewHolder) convertView.getTag();
 			
-		if (holder.txtPendingName != null)
+		if (holder.txtPendingName != null){
 			holder.txtPendingName.setText(given.getProductName());
-			 
-		if(holder.txtPrice != null)
+		}
+		if(holder.txtPrice != null){
 			holder.txtPrice.setText("$" + given.getPrice());
-		
+		}
+		String pic=given.getSelfieUrl();
+		if(holder.txtPendingResponseSelfie != null){
+			if(pic.equalsIgnoreCase("null")){
+				holder.txtPendingResponseSelfie.setText("Capture Slefie");
+			}else{
+				holder.txtPendingResponseSelfie.setText("View Selfie");
+			}
+			
+		}
 	 
 		return convertView;
 	}

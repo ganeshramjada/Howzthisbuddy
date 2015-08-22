@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pivotaldesign.howzthisbuddy.R;
@@ -34,6 +35,7 @@ public class HBGivenResponseAdapter extends ArrayAdapter<HBGivenResponse> {
 	private static class ViewHolder
 	{
 		TextView txtGivenName, txtPrice, txtGivenResponseSelfie;
+		ImageView iv_img_opinion_response_given_list_item_given_status;
 	}
 	
 	ViewHolder holder = null;
@@ -48,6 +50,7 @@ public class HBGivenResponseAdapter extends ArrayAdapter<HBGivenResponse> {
 			holder.txtGivenName = (TextView) convertView.findViewById(R.id.txt_opinion_response_given_list_item_title);
 			holder.txtPrice = (TextView) convertView.findViewById(R.id.txt_opinion_response_given_list_item_price);
 			holder.txtGivenResponseSelfie = (TextView) convertView.findViewById(R.id.txt_opinion_response_given_list_item_view_selfie);
+			holder.iv_img_opinion_response_given_list_item_given_status=(ImageView)convertView.findViewById(R.id.img_opinion_response_given_list_item_given_status);
 				
 			holder.txtGivenName.setTypeface(_typefaceRegular);
 			holder.txtPrice.setTypeface(_typefaceRegular);
@@ -58,11 +61,33 @@ public class HBGivenResponseAdapter extends ArrayAdapter<HBGivenResponse> {
 		else
 			holder = (ViewHolder) convertView.getTag();
 		
-		if (holder.txtGivenName != null)
+		if (holder.txtGivenName != null){
 			holder.txtGivenName.setText(given.getProductName());
+		}
 			 
-		if(holder.txtPrice != null)
+		if(holder.txtPrice != null){
 			holder.txtPrice.setText("$" + given.getPrice());
+		}
+		String pic=given.getSelfieUrl();
+		if(holder.txtGivenResponseSelfie != null){
+			if(pic.equalsIgnoreCase("null")){
+				holder.txtGivenResponseSelfie.setText("Capture Slefie");
+			}else{
+				holder.txtGivenResponseSelfie.setText("View Selfie");
+			}
+			
+		}
+		int opinionid=given.getGivenStatus();
+		if(opinionid==1){
+			holder.iv_img_opinion_response_given_list_item_given_status.setBackgroundResource(R.drawable.like);
+		}else if(opinionid==2){
+			holder.iv_img_opinion_response_given_list_item_given_status.setBackgroundResource(R.drawable.not_sure);
+
+		}else if(opinionid==3){
+			holder.iv_img_opinion_response_given_list_item_given_status.setBackgroundResource(R.drawable.do_not_like);
+
+		}
+		
 		
 	 
 		return convertView;

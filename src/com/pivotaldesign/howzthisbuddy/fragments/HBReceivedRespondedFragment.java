@@ -45,7 +45,7 @@ public class HBReceivedRespondedFragment extends Fragment {
 			HBOpinionReceivedDetail responded = new HBOpinionReceivedDetail();
 			responded.setRespondedBuddyName("Walter White");
 			responded.setDate(new Date());
-			
+			responded.setRespondedStatus(hbrf.al_completeresp1.get(0).getOpinionRespondedList().get(index).getOpinionTypeCode());
 			respondeds[index] = responded;
 		}
 		

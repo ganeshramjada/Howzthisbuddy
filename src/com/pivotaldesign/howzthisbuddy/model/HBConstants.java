@@ -32,4 +32,10 @@ public class HBConstants {
 
     
     public static final String updateOpinionItemSelfieDetails="https://friendly-worms-7467.herokuapp.com/updateOpinionItemSelfieDetails";
+
+    public static final String respondOpinion="https://friendly-worms-7467.herokuapp.com/respondOpinion";
+
+
+
+
 }

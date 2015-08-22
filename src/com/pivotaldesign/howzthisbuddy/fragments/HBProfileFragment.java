@@ -154,26 +154,7 @@ public class HBProfileFragment extends Fragment implements OnClickListener{
 			
 			if(name.length()!=0){
 				
-				File imagefile = new File(uriSting);
-				if(imagefile.exists()){
-					FileInputStream fis = null;
-					
-					
-					try {
-					    fis = new FileInputStream(imagefile);
-					    } catch (FileNotFoundException e) {
-					    e.printStackTrace();
-					    
-					}
-
-					Bitmap bm = BitmapFactory.decodeStream(fis);
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();  
-					bm.compress(Bitmap.CompressFormat.JPEG, 100 , baos);    
-					byte[] b = baos.toByteArray(); 
-					encImage = Base64.encodeToString(b, Base64.DEFAULT);
-				}else{
-					encImage="";
-				}
+				encImage=au.encryptedImage(uriSting);
 				
 				if(!name.equalsIgnoreCase(null)){
 					if(ci.isConnectingToInternet()){

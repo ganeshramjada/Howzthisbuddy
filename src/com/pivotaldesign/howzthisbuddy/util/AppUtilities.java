@@ -2,6 +2,9 @@ package com.pivotaldesign.howzthisbuddy.util;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,6 +34,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.provider.ContactsContract.PhoneLookup;
 import android.provider.MediaStore.Images;
 import android.util.Base64;
 import android.util.Log;
@@ -279,5 +283,57 @@ public class AppUtilities {
 		int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
 		return cursor.getString(idx);
 	}
+
+	
+	public String encryptedImage(String encimage){
+		String encImage;
+		File imagefile = new File(encimage);
+		if(imagefile.exists()){
+			FileInputStream fis = null;
+			
+			
+			try {
+			    fis = new FileInputStream(imagefile);
+			    } catch (FileNotFoundException e) {
+			    e.printStackTrace();
+			    
+			}
+
+			Bitmap bm = BitmapFactory.decodeStream(fis);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();  
+			bm.compress(Bitmap.CompressFormat.JPEG, 100 , baos);    
+			byte[] b = baos.toByteArray(); 
+			encImage = Base64.encodeToString(b, Base64.DEFAULT);
+		}else{
+			encImage="";
+		}
+		return encImage;
+	}
+
+
+	public String getContactName(Context context, String phoneNumber) {
+	    ContentResolver cr = context.getContentResolver();
+	    Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+	    Cursor cursor = cr.query(uri, new String[]{PhoneLookup.DISPLAY_NAME}, null, null, null);
+	    if (cursor == null) {
+	        return null;
+	    }
+	    String contactName = null;
+	    if(cursor.moveToFirst()) {
+	        contactName = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
+	    }
+
+	    if(cursor != null && !cursor.isClosed()) {
+	        cursor.close();
+	    }
+
+	    return contactName;
+	}
+
+
+
+
+
+
 
 }

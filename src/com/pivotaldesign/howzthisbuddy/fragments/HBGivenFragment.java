@@ -61,13 +61,11 @@ public class HBGivenFragment extends Fragment {
     private ListView listGivenBuddy;
     private JSONArray hbgf_ja_resp=null;
     private String listdetail;
-    public static ArrayList<ItemBO> al_itm_given;
-    public static ArrayList<ItemBO> al_itm_pending;
-    public static ArrayList<OpinionBO>al_opinion_given;
-    public static ArrayList<OpinionBO>al_opinion_pending;
-    public static ArrayList<ItemSelfieDetailsBO>al_selfie_given;
-    public static ArrayList<ItemSelfieDetailsBO>al_selfie_pending;
-    public static ArrayList<OpinionsGivenDetailsBO> al_opiniongivendetal;
+    public static ArrayList<UserItemOpinionBO> al_uiob_gvn;
+    public static ArrayList<UserItemOpinionBO> al_uiob_pending;
+    public static ArrayList<OpinionsGivenDetailsBO> al_uiob_detail;
+	public static OpinionsGivenDetailsBO opi_giv_det_bo=new OpinionsGivenDetailsBO();
+
 	public HBGivenFragment(HBNotifier notifier) {
 		this._notifier = notifier;
 	}
@@ -114,7 +112,7 @@ public class HBGivenFragment extends Fragment {
 					e.printStackTrace();
 				}
 				new HBgetOpinionsToBeGivenListDetail().execute("");
-				//showGivenDetailActivity();
+				
 			}
 		});
         new HBgetOpinionsToBeGivenList().execute("");
@@ -211,36 +209,56 @@ public class HBGivenFragment extends Fragment {
 			super.onPostExecute(result);
 			progress.dismiss();
 			JSONObject hbgf_ga_resp;
-			OpinionsGivenDetailsBO opi_giv_det_bo=new OpinionsGivenDetailsBO();
-			UserItemOpinionBO usr_itm_opi_bo=new UserItemOpinionBO();
-			ItemBO item_bo=new ItemBO();
-			OpinionBO opinion_bo=new OpinionBO();
-			ItemSelfieDetailsBO item_selfie_det_bo=new ItemSelfieDetailsBO();
-			al_opiniongivendetal=new ArrayList<OpinionsGivenDetailsBO>();
-			al_itm_given=new ArrayList<ItemBO>();
-			al_itm_pending=new ArrayList<ItemBO>();
-			al_opinion_given=new ArrayList<OpinionBO>();
-			al_opinion_pending=new ArrayList<OpinionBO>();
-			al_selfie_given=new ArrayList<ItemSelfieDetailsBO>();
-			al_selfie_pending=new ArrayList<ItemSelfieDetailsBO>();
+			UserItemOpinionBO usr_itm_opi_bo_gvn;
+			UserItemOpinionBO usr_itm_opi_bo_pndng;
+			ItemBO item_bo;
+			ItemBO item_bo1;
+			OpinionBO opinion_bo;
+			OpinionBO opinion_bo1;
+			ItemSelfieDetailsBO item_selfie_gvn_bo;
+			ItemSelfieDetailsBO item_selfie_pend_bo;
+			al_uiob_gvn=new ArrayList<UserItemOpinionBO>();
+			al_uiob_pending=new ArrayList<UserItemOpinionBO>();
+			al_uiob_detail=new ArrayList<OpinionsGivenDetailsBO>();
 			JSONArray hbgf_ja_opinionsgiven;
+			JSONArray hbgf_ja_opinionspending;
 			try {
 				hbgf_ga_resp=new JSONObject(hbgf_str_resp_givenfragment.toString());
 				
 				opi_giv_det_bo.setRequestPhoneNumber(hbgf_ga_resp.getLong("requestPhoneNumber"));
 				opi_giv_det_bo.setResponsePhoneNumber(hbgf_ga_resp.getLong("responsePhoneNumber"));
-				if(!hbgf_ga_resp.get("opinionsGiven").toString().equalsIgnoreCase("null")){
+				if(hbgf_ga_resp.getJSONArray("opinionsGiven").length()!=0){
 					try {
 						hbgf_ja_opinionsgiven = hbgf_ga_resp.getJSONArray("opinionsGiven");
 						for(int i=0;i<hbgf_ja_opinionsgiven.length();i++){
-							item_bo.setItemId(hbgf_ja_opinionsgiven.getJSONObject(i).getLong("itemId"));
-							item_bo.setItemDesc(hbgf_ja_opinionsgiven.getJSONObject(i).getString("itemDesc"));
-							item_bo.setItemTitle(hbgf_ja_opinionsgiven.getJSONObject(i).getString("itemTitle"));
-							item_bo.setVendorId(hbgf_ja_opinionsgiven.getJSONObject(i).getLong("vendorId"));
-							item_bo.setVendorProductId(hbgf_ja_opinionsgiven.getJSONObject(i).getString("vendorProductId"));
-							item_bo.setProductUrl(hbgf_ja_opinionsgiven.getJSONObject(i).getString("productUrl"));
-							item_bo.setPrice(hbgf_ja_opinionsgiven.getJSONObject(i).getString("price"));
-						    al_itm_given.add(item_bo);
+							JSONObject jobj_gvn;
+							usr_itm_opi_bo_gvn=new UserItemOpinionBO();
+							item_bo=new ItemBO();
+							opinion_bo=new OpinionBO();
+							item_selfie_gvn_bo=new ItemSelfieDetailsBO();
+							//jobj_gvn=hbgf_ja_opinionsgiven.getJSONObject(index);
+							item_bo.setItemId(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("itemBO").getLong("itemId"));
+							item_bo.setItemDesc(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("itemBO").getString("itemDesc"));
+							item_bo.setItemTitle(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("itemBO").getString("itemTitle"));
+							item_bo.setVendorId(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("itemBO").getLong("vendorId"));
+							item_bo.setVendorProductId(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("itemBO").getString("vendorProductId"));
+							item_bo.setProductUrl(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("itemBO").getString("productUrl"));
+							item_bo.setPrice(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("itemBO").getString("price"));
+						    opinion_bo.setOpinionId(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("opinionBO").getLong("opinionId"));
+						    opinion_bo.setOpinionRequestDate(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("opinionBO").getString("opinionRequestDate"));;
+						    opinion_bo.setOpinionTypeCode(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("opinionBO").getLong("opinionTypeCode"));
+						    opinion_bo.setOpinionResponseDate(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("opinionBO").getString("opinionResponseDate"));
+						    opinion_bo.setComments(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("opinionBO").getString("comments"));
+						    opinion_bo.setResponsePhoneNumber(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("opinionBO").getLong("responsePhoneNumber"));
+						    item_selfie_gvn_bo.setItemSelfieDetailsId(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("itemSelfieDetailsBO").getLong("itemSelfieDetailsId"));
+						    item_selfie_gvn_bo.setItemSelfieDetailsFlag(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("itemSelfieDetailsBO").getBoolean("itemSelfieDetailsFlag"));
+						    item_selfie_gvn_bo.setSelfiePic(hbgf_ja_opinionsgiven.getJSONObject(i).getJSONObject("itemSelfieDetailsBO").getString("selfiePic"));
+						    usr_itm_opi_bo_gvn.setItemBO(item_bo);
+						    usr_itm_opi_bo_gvn.setOpinionBO(opinion_bo);
+						    usr_itm_opi_bo_gvn.setItemSelfieDetailsBO(item_selfie_gvn_bo);
+						    usr_itm_opi_bo_gvn.setRequestPhoneNumber(hbgf_ja_opinionsgiven.getJSONObject(i).getLong("requestPhoneNumber"));
+						    usr_itm_opi_bo_gvn.setResponsePhoneNumber(hbgf_ja_opinionsgiven.getJSONObject(i).getString("responsePhoneNumber"));
+						    al_uiob_gvn.add(usr_itm_opi_bo_gvn);
 						}
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -248,6 +266,50 @@ public class HBGivenFragment extends Fragment {
 						e.printStackTrace();
 					}
 				}
+				else{
+					//al_uiob_gvn.add(null);
+				}
+				if(hbgf_ga_resp.getJSONArray("opinionsPending").length()!=0){
+					try{
+						hbgf_ja_opinionspending=hbgf_ga_resp.getJSONArray("opinionsPending");
+						for(int j=0;j<hbgf_ja_opinionspending.length();j++){
+							usr_itm_opi_bo_pndng=new UserItemOpinionBO();
+							item_bo1=new ItemBO();
+							opinion_bo1=new OpinionBO();
+							item_selfie_pend_bo=new ItemSelfieDetailsBO();
+							item_bo1.setItemId(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("itemBO").getLong("itemId"));
+							item_bo1.setItemDesc(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("itemBO").getString("itemDesc"));
+							item_bo1.setItemTitle(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("itemBO").getString("itemTitle"));
+							item_bo1.setVendorId(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("itemBO").getLong("vendorId"));
+							item_bo1.setVendorProductId(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("itemBO").getString("vendorProductId"));
+							item_bo1.setProductUrl(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("itemBO").getString("productUrl"));
+							item_bo1.setPrice(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("itemBO").getString("price"));
+						    opinion_bo1.setOpinionId(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("opinionBO").getLong("opinionId"));
+						    opinion_bo1.setOpinionRequestDate(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("opinionBO").getString("opinionRequestDate"));;
+						    opinion_bo1.setOpinionTypeCode(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("opinionBO").getLong("opinionTypeCode"));
+						    opinion_bo1.setOpinionResponseDate(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("opinionBO").getString("opinionResponseDate"));
+						    opinion_bo1.setComments(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("opinionBO").getString("comments"));
+						    opinion_bo1.setResponsePhoneNumber(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("opinionBO").getLong("responsePhoneNumber"));
+						    item_selfie_pend_bo.setItemSelfieDetailsId(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("itemSelfieDetailsBO").getLong("itemSelfieDetailsId"));
+						    item_selfie_pend_bo.setItemSelfieDetailsFlag(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("itemSelfieDetailsBO").getBoolean("itemSelfieDetailsFlag"));
+						    item_selfie_pend_bo.setSelfiePic(hbgf_ja_opinionspending.getJSONObject(j).getJSONObject("itemSelfieDetailsBO").getString("selfiePic"));
+						    usr_itm_opi_bo_pndng.setItemBO(item_bo1);
+						    usr_itm_opi_bo_pndng.setOpinionBO(opinion_bo1);
+						    usr_itm_opi_bo_pndng.setItemSelfieDetailsBO(item_selfie_pend_bo);
+						    usr_itm_opi_bo_pndng.setRequestPhoneNumber(hbgf_ja_opinionspending.getJSONObject(j).getLong("requestPhoneNumber"));
+						    usr_itm_opi_bo_pndng.setResponsePhoneNumber(hbgf_ja_opinionspending.getJSONObject(j).getString("responsePhoneNumber"));
+						    al_uiob_pending.add(usr_itm_opi_bo_pndng);
+						}
+						
+						
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}else{
+					//al_uiob_pending.add(null);
+				}
+				opi_giv_det_bo.setOpinionsGiven(al_uiob_gvn);
+				opi_giv_det_bo.setOpinionsPending(al_uiob_pending);
 				/*HBGiven givens[] = new HBGiven[hbgf_ja_resp.length()];
 		        for (int i = 0; i < givens.length; i++) {
 					HBGiven given = new HBGiven();
@@ -265,7 +327,8 @@ public class HBGivenFragment extends Fragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			al_uiob_detail.add(opi_giv_det_bo);
+			showGivenDetailActivity();
 		}
 	}
 

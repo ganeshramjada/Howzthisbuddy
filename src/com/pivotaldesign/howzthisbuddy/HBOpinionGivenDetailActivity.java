@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.pivotaldesign.howzthisbuddy.application.HBApplication;
 import com.pivotaldesign.howzthisbuddy.fragments.HBGivenDetailFragment;
+import com.pivotaldesign.howzthisbuddy.fragments.HBGivenFragment;
 import com.pivotaldesign.howzthisbuddy.fragments.HBPendingDetailFragment;
 import com.pivotaldesign.howzthisbuddy.model.HBNotifier;
 import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
@@ -38,14 +39,17 @@ public class HBOpinionGivenDetailActivity extends FragmentActivity  implements H
     private AppUtilities au;
     private CheckInternet ci;
     private String number;
-	
+    private HBGivenFragment hbgf=new HBGivenFragment(_notifier);
+    String pendingcount;
+    String givencount;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_opinion_given_details);
-		
-		
+		hbh_spf_login_details=getApplicationContext().getSharedPreferences("loginprefs",0);
+	    pendingcount=""+(hbgf.al_uiob_detail.get(0).getOpinionsPending().size());
+		givencount=""+(hbgf.al_uiob_detail.get(0).getOpinionsGiven().size());
 		ActionBar actionBar = getActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
         actionBar.setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent))); 
@@ -83,7 +87,7 @@ public class HBOpinionGivenDetailActivity extends FragmentActivity  implements H
         txtGivenCount.setTypeface(HBApplication.getInstance().getRegularFont());
         
         txtInviteByName.setText("Invites By"+name);
-        txtGivenCount.setText("Total:50");
+        txtGivenCount.setText("Total:"+(Integer.parseInt(givencount)+Integer.parseInt(pendingcount)));
         
 		ViewPager pager = (ViewPager) findViewById(R.id.viewPager_given_detail);
 		pager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
@@ -109,7 +113,9 @@ public class HBOpinionGivenDetailActivity extends FragmentActivity  implements H
 	
 	
 	class SectionsPagerAdapter extends FragmentStatePagerAdapter {
-		String[] _sections = new String[]{ "Given(10)", "Pending(25)" };
+		
+		
+		String[] _sections = new String[]{ "Given("+givencount+")", "Pending("+pendingcount+")" };
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}

@@ -81,9 +81,11 @@ public class HBReceivedFragment extends Fragment{
 	private static final int REQUEST_CODE_CLICK_IMAGE = 2;
 	int pos;
 	private ListView listBuddy;
-	private static Long hbrf_lng_selected_itemid;
+	private Long hbrf_lng_selected_itemid;
+	private Long hbrf_lng_selected_itemselfieid;
 	private Long hbrf_lng_phonenumber;
-	private static String uriSting;
+	private String uriSting;
+	private String encImage;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -548,10 +550,10 @@ public class HBReceivedFragment extends Fragment{
 				@Override
 				public void onClick(View v) {
 					int p = ((Integer) v.getTag()) + 1;
-					Toast.makeText(getActivity(), ""+al_completeresp.get(position).getItemBO().getItemId(), Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), ""+al_completeresp.get(position).getItemSelfieDetailsBO().getItemSelfieDetailsId(), Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 					 startActivityForResult(intent, REQUEST_CODE_CLICK_IMAGE);	
-					hbrf_lng_selected_itemid=al_completeresp.get(position).getItemBO().getItemId();
+					hbrf_lng_selected_itemselfieid=al_completeresp.get(position).getItemSelfieDetailsBO().getItemSelfieDetailsId();
 
 				}
 			});
@@ -572,7 +574,8 @@ public class HBReceivedFragment extends Fragment{
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		try {
-			 if(requestCode==REQUEST_CODE_CLICK_IMAGE && resultCode==Activity.RESULT_OK && null!=data){ Bitmap photo = (Bitmap) data.getExtras().get("data"); 
+			 if(requestCode==REQUEST_CODE_CLICK_IMAGE && resultCode==Activity.RESULT_OK && null!=data){ 
+				 Bitmap photo = (Bitmap) data.getExtras().get("data"); 
 			  Uri tempUri = au.getImageUri(getActivity(), photo);
 			  String path=au.getRealPath(getActivity(),tempUri);
 			  ImageCompressionAsyncTask img=new ImageCompressionAsyncTask(getActivity(),true);
@@ -582,7 +585,7 @@ public class HBReceivedFragment extends Fragment{
 				Toast.makeText(getActivity(), "Hey pick your image first",Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {
-			Toast.makeText(getActivity(), "Something went embrassing", Toast.LENGTH_LONG)
+			Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_LONG)
 					.show();
 		}
 
@@ -604,27 +607,12 @@ public class HBReceivedFragment extends Fragment{
 
 		@Override
 		protected String doInBackground(String... params) {
-			File imagefile = new File(uriSting);
-			if(imagefile.exists()){
-				FileInputStream fis = null;
-				
-				
-				try {
-				    fis = new FileInputStream(imagefile);
-				    } catch (FileNotFoundException e) {
-				    e.printStackTrace();
-				    
-				}
-
-				Bitmap bm = BitmapFactory.decodeStream(fis);
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();  
-				bm.compress(Bitmap.CompressFormat.JPEG, 100 , baos);    
-				byte[] b = baos.toByteArray(); 
-				String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+			 encImage=au.encryptedImage(uriSting);
 				JSONObject hbr_jobj = new JSONObject();
 				try {
-					hbr_jobj.put("itemSelfieDetailsId", ""+hbrf_lng_selected_itemid);
+					hbr_jobj.put("itemSelfieDetailsId", ""+hbrf_lng_selected_itemselfieid);
 					hbr_jobj.put("selfiePic", encImage);
+					
 
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -632,8 +620,7 @@ public class HBReceivedFragment extends Fragment{
 				}
 			String reg_params = hbr_jobj.toString();
 		    hbr_str_captureopinion_resp=au.makeRequeststatusline(HBConstants.updateOpinionItemSelfieDetails, reg_params);
-			}
-				return hbr_str_captureopinion_resp;
+			return hbr_str_captureopinion_resp;
 		}
 
 		@Override

@@ -3,6 +3,14 @@
  */
 package com.pivotaldesign.howzthisbuddy.fragments;
 
+import java.util.ArrayList;
+
+import com.pivotaldesign.howzthisbuddy.R;
+import com.pivotaldesign.howzthisbuddy.adapter.HBContactsAdapter;
+import com.pivotaldesign.howzthisbuddy.application.HBApplication;
+import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
+import com.pivotaldesign.howzthisbuddy.util.HBCustomShapeDrawable;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.graphics.Color;
@@ -22,18 +30,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.pivotaldesign.howzthisbuddy.R;
-import com.pivotaldesign.howzthisbuddy.adapter.HBContactsAdapter;
-import com.pivotaldesign.howzthisbuddy.application.HBApplication;
-import com.pivotaldesign.howzthisbuddy.util.HBCustomShapeDrawable;
-
 /**
  * @author Satish Kolawale
  *
  */
 public class HBRequestLaunchFragment extends Fragment{
 	
-
+private AppUtilities au=new AppUtilities(getActivity());
+private ArrayList<String> contactnumbers;
 	@SuppressLint("NewApi")
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,9 +79,14 @@ public class HBRequestLaunchFragment extends Fragment{
         ShapeDrawable thirdDrawable = new HBCustomShapeDrawable(rs, Color.YELLOW, Color.WHITE, 0);
         txtThirdColorCode.setBackgroundDrawable(thirdDrawable);
          
+        contactnumbers=au.fetchContacts(getActivity());
         // contacts
-        String buddis[] = new  String[10];
+        String buddis[] = new  String[contactnumbers.size()];
         for (int index = 0; index < buddis.length; index++) {
+        	String name;
+        	for(int i=0;i<buddis.length;i++){
+        	    name=au.getContactName(getActivity(), contactnumbers.get(i).toString());
+        	}
 			buddis[index] = "Steve Robinson";
 		}
         
