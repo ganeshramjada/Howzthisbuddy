@@ -35,6 +35,7 @@ public class HBConstants {
 
     public static final String respondOpinion="https://friendly-worms-7467.herokuapp.com/respondOpinion";
 
+    public static final String requestOpinion="https://friendly-worms-7467.herokuapp.com/requestOpinion";
 
 
 
