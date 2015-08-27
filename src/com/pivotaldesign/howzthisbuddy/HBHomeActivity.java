@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.pivotaldesign.howzthisbuddy.adapter.HBDrawerListAdapter;
+import com.pivotaldesign.howzthisbuddy.bean.ResponseContactInfBO;
 import com.pivotaldesign.howzthisbuddy.fragments.HBAboutFragment;
 import com.pivotaldesign.howzthisbuddy.fragments.HBGivenFragment;
 import com.pivotaldesign.howzthisbuddy.fragments.HBOfferFragment;
@@ -73,6 +74,8 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 	
 	private AppUtilities au;
 	private ArrayList<String> list_numbers;
+	public static ArrayList<String> list_response_numbers;
+	public static ArrayList<String> list_response_name;
 	private Thread thread;
 	private ProgressDialog progress;
 	public Handler handler = new Handler();
@@ -81,6 +84,8 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 	private String hbha_str_getcontacts_resp;
 	private JSONArray hbh_jarr_contact_resp=null;
 	private SharedPreferences hbh_spf_contact_resp;
+	private ResponseContactInfBO rcib;
+	public static ArrayList<ResponseContactInfBO> al_rcib=new ArrayList<ResponseContactInfBO>();
     protected void onCreate(android.os.Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -165,7 +170,7 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 		
 		///enable to update contacts
 		
-		//fetchContacts();
+		fetchContacts();
 	}
 	
 	
@@ -350,6 +355,8 @@ public void fetchContacts() {
 			progress.dismiss();
 			if(hbha_str_getcontacts_resp!=null){
 				try {
+					list_response_numbers=new ArrayList<String>();
+					list_response_name=new ArrayList<String>();
 					 hbh_jarr_contact_resp=new JSONArray(hbha_str_getcontacts_resp.toString());
 					 Editor editor = hbh_spf_contact_resp.edit();
 					for(int i=0;i<hbh_jarr_contact_resp.length();i++){
@@ -357,7 +364,14 @@ public void fetchContacts() {
 
 						String phonenumber=c.getString("phoneNumber");
 						String profilepic=c.getString("profilePic");
-						 editor.putString(phonenumber, profilepic);
+						editor.putString(phonenumber, profilepic);
+						String name=au.getContactName(getApplicationContext(), phonenumber);
+						list_response_numbers.add(phonenumber);
+						list_response_name.add(name);
+						rcib=new ResponseContactInfBO();
+						rcib.setName(name);
+						rcib.setPhonenum(phonenumber);
+						al_rcib.add(rcib);
 					}
 					 editor.commit();
 				} catch (JSONException e) {
