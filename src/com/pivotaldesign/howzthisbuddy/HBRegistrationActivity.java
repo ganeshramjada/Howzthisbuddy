@@ -4,9 +4,21 @@
 package com.pivotaldesign.howzthisbuddy;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.pivotaldesign.howzthisbuddy.application.HBApplication;
+import com.pivotaldesign.howzthisbuddy.model.HBConstants;
+import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
+import com.pivotaldesign.howzthisbuddy.util.CheckInternet;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -249,7 +261,6 @@ public class HBRegistrationActivity extends Activity {
 
 		@Override
 		protected String doInBackground(String... params) {
-			
 			gson_reg_req = new Gson();
 		    String reg_params = gson_reg_req.toJson(hbr_hm_reg_req_params);
 		    hbr_str_reg_resp_otprequest=au.makeRequeststatusline(HBConstants.reg_req, reg_params);
