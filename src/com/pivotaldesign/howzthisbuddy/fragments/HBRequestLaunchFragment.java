@@ -5,6 +5,7 @@
 package com.pivotaldesign.howzthisbuddy.fragments;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -124,7 +125,7 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
     	hbr_txt_user_profile_name.setText(name);
     	
 
-        
+        ImageView iv_img_product_detail_picture=(ImageView)rootView.findViewById(R.id.img_product_detail_picture);
         TextView tv_txt_user_profile_name=(TextView) rootView.findViewById(R.id.txt_user_profile_name);
         tv_txt_user_profile_name.setTypeface(HBApplication.getInstance().getRegularFont());
         TextView tv_txt_product_detail_name=(TextView) rootView.findViewById(R.id.txt_product_detail_name);
@@ -163,10 +164,21 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
      	str_item_desc=hbrl_spf_callingapp_creds.getString("ITEM_DESC","");
      	str_item_price=hbrl_spf_callingapp_creds.getString("ITEM_PRICE","");
      	str_item_url=hbrl_spf_callingapp_creds.getString("ITEM_URL","");
-     	
+     	ViewSelifie vs=new ViewSelifie(getActivity());
+     	Bitmap bmp=null;
+     	try {
+			bmp=vs.execute(str_item_url).get();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ExecutionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
      	tv_txt_product_detail_price.setText("Price:"+str_item_price);
      	tv_txt_product_detail_product_description.setText(str_item_desc);
      	tv_txt_product_detail_name.setText(str_item_name);
+     	iv_img_product_detail_picture.setImageBitmap(bmp);
 
         Toast.makeText(getActivity(), str_org_id+str_org_name+str_item_id, Toast.LENGTH_SHORT).show();
         TextView txtOldPrice = (TextView) rootView.findViewById(R.id.txt_product_detail_product_origin_price);
