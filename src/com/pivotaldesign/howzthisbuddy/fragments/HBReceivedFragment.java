@@ -557,7 +557,7 @@ public class HBReceivedFragment extends Fragment{
 
 				}
 			});
-			hbrf_tv_txt_opinion_received_list_item_price.setText(al_completeresp.get(position).getItemBO().getPrice());
+			hbrf_tv_txt_opinion_received_list_item_price.setText("Price:$"+al_completeresp.get(position).getItemBO().getPrice());
 			hbrf_tv_txt_opinion_received_list_item_like.setText(""+al_completeresp.get(position).getLikeCount());
 			hbrf_tv_txt_opinion_received_list_item_not_sure.setText(""+al_completeresp.get(position).getMayBeCount());
 			hbrf_tv_txt_opinion_received_list_item_dislike.setText(""+al_completeresp.get(position).getDisLikeCount());
