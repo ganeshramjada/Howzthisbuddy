@@ -66,6 +66,7 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 	private int _currentPageIndex = 0;
 
 
+	
 	// slide menu items
 	private String[] navMenuTitles;
 
