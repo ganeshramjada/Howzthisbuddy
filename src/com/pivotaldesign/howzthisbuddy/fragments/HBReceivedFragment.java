@@ -581,13 +581,13 @@ public class HBReceivedFragment extends Fragment{
 			  ImageCompressionAsyncTask img=new ImageCompressionAsyncTask(getActivity(),true);
 			  uriSting=img.execute(path).get();
 				new HBRsendcaptureselfie().execute("");
-			}else {
-				Toast.makeText(getActivity(), "Hey pick your image first",Toast.LENGTH_LONG).show();
+			 }else {
+					Toast.makeText(getActivity(), "Please take a pic",Toast.LENGTH_LONG).show();
+				}
+			} catch (Exception e) {
+				Toast.makeText(getActivity(), "Something wrong", Toast.LENGTH_LONG)
+						.show();
 			}
-		} catch (Exception e) {
-			Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_LONG)
-					.show();
-		}
 
 	}
 

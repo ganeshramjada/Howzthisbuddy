@@ -211,10 +211,10 @@ public class HBProfileFragment extends Fragment implements OnClickListener{
 				iv_profile_pic.setImageBitmap(BitmapFactory
 						.decodeFile(imgFile.getAbsolutePath()));
 			}else {
-				Toast.makeText(getActivity(), "Hey pick your image first",Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), "Please take a pic",Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {
-			Toast.makeText(getActivity(), "Something went embrassing", Toast.LENGTH_LONG)
+			Toast.makeText(getActivity(), "Something wrong", Toast.LENGTH_LONG)
 					.show();
 		}
 

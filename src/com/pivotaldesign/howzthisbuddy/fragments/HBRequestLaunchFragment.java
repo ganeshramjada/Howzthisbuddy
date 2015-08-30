@@ -22,10 +22,12 @@ import com.pivotaldesign.howzthisbuddy.util.CheckInternet;
 import com.pivotaldesign.howzthisbuddy.util.HBCustomShapeDrawable;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -37,9 +39,11 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
@@ -80,6 +84,20 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
 	private String hbrf_str_req_opinion;
 	private HBHomeActivity hbha=new HBHomeActivity();
 	private HBSearchAdapter hbsa;//new HBSearchAdapter(getActivity(), hbrf_al_selected_buddies);
+	private SharedPreferences hbrl_spf_callingapp_creds;
+	
+	public static String str_org_id;
+	public static String str_org_name;
+	public static String str_item_id;
+	public static String str_item_name;
+	public static String str_item_desc;
+	public static String str_item_price;
+	public static String str_item_url;
+	
+	
+	 private static final int REQUEST_CODE_CLICK_IMAGE = 2;
+	 private String uriSting="";
+	 private String encImage="";
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -87,9 +105,10 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
 		
 		
  
-		madapter=new MyAdapter();
+		//madapter=new MyAdapter();
         View rootView = inflater.inflate(R.layout.fragment_request_launch, container, false);
         hbh_spf_login_details=getActivity().getSharedPreferences("loginprefs",0);
+        hbrl_spf_callingapp_creds=getActivity().getSharedPreferences("callingappcredentials", 0);
         TextView hbr_txt_user_profile_name=(TextView)rootView.findViewById(R.id.txt_user_profile_name);
     	ImageView hbr_iv_user_pic=(ImageView)rootView.findViewById(R.id.img_user_profile_photo);
     	hbr_txt_user_profile_name.setTypeface(HBApplication.getInstance().getRegularFont());
@@ -103,24 +122,53 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
     		hbr_iv_user_pic.setImageBitmap(bm);
     	}
     	hbr_txt_user_profile_name.setText(name);
+    	
 
         
-        
-        
-        
-        ((TextView) rootView.findViewById(R.id.txt_user_profile_name)).setTypeface(HBApplication.getInstance().getRegularFont());
-        
-        ((TextView) rootView.findViewById(R.id.txt_product_detail_name)).setTypeface(HBApplication.getInstance().getRegularFont());
-        ((TextView) rootView.findViewById(R.id.txt_product_detail_product_id)).setTypeface(HBApplication.getInstance().getRegularFont());
-        ((TextView) rootView.findViewById(R.id.txt_product_detail_product_description)).setTypeface(HBApplication.getInstance().getNormalFont());
-        ((TextView) rootView.findViewById(R.id.txt_product_detail_size)).setTypeface(HBApplication.getInstance().getNormalFont());
-        ((TextView) rootView.findViewById(R.id.txt_product_detail_color)).setTypeface(HBApplication.getInstance().getNormalFont());
-        ((TextView) rootView.findViewById(R.id.txt_product_detail_price)).setTypeface(HBApplication.getInstance().getBoldFont());
-        ((TextView) rootView.findViewById(R.id.txt_product_detail_selfie)).setTypeface(HBApplication.getInstance().getRegularFont());
+        TextView tv_txt_user_profile_name=(TextView) rootView.findViewById(R.id.txt_user_profile_name);
+        tv_txt_user_profile_name.setTypeface(HBApplication.getInstance().getRegularFont());
+        TextView tv_txt_product_detail_name=(TextView) rootView.findViewById(R.id.txt_product_detail_name);
+        tv_txt_product_detail_name.setTypeface(HBApplication.getInstance().getRegularFont());
+        TextView tv_txt_product_detail_product_id=(TextView) rootView.findViewById(R.id.txt_product_detail_product_id);
+        tv_txt_product_detail_product_id.setTypeface(HBApplication.getInstance().getRegularFont());
+        TextView tv_txt_product_detail_product_description=(TextView) rootView.findViewById(R.id.txt_product_detail_product_description);
+        tv_txt_product_detail_product_description.setTypeface(HBApplication.getInstance().getNormalFont());
+        TextView tv_txt_product_detail_size=(TextView) rootView.findViewById(R.id.txt_product_detail_size);
+        tv_txt_product_detail_size.setTypeface(HBApplication.getInstance().getNormalFont());
+        TextView tv_txt_product_detail_color=(TextView) rootView.findViewById(R.id.txt_product_detail_color);
+        tv_txt_product_detail_color.setTypeface(HBApplication.getInstance().getNormalFont());
+        TextView tv_txt_product_detail_price=(TextView) rootView.findViewById(R.id.txt_product_detail_price);
+        tv_txt_product_detail_price.setTypeface(HBApplication.getInstance().getBoldFont());
+        TextView tv_txt_product_detail_selfie=(TextView) rootView.findViewById(R.id.txt_product_detail_selfie);
+        tv_txt_product_detail_selfie.setTypeface(HBApplication.getInstance().getRegularFont());
         tv_txt_received_invite_buddy=(TextView) rootView.findViewById(R.id.txt_received_invite_buddy);
         tv_txt_received_invite_buddy.setTypeface(HBApplication.getInstance().getRegularFont());
         tv_txt_received_invite_buddy.setOnClickListener(this);
+        tv_txt_product_detail_selfie.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getActivity(), "In Progress", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				 startActivityForResult(intent, REQUEST_CODE_CLICK_IMAGE);	
+				
+			}
+		});
         
+        str_org_id=hbrl_spf_callingapp_creds.getString("ORG_ID","");
+     	str_org_name=hbrl_spf_callingapp_creds.getString("ORG_NAME","");
+     	str_item_id=hbrl_spf_callingapp_creds.getString("ITEM_ID","");
+     	str_item_name=hbrl_spf_callingapp_creds.getString("ITEM_NAME","");
+     	str_item_desc=hbrl_spf_callingapp_creds.getString("ITEM_DESC","");
+     	str_item_price=hbrl_spf_callingapp_creds.getString("ITEM_PRICE","");
+     	str_item_url=hbrl_spf_callingapp_creds.getString("ITEM_URL","");
+     	
+     	tv_txt_product_detail_price.setText("Price:"+str_item_price);
+     	tv_txt_product_detail_product_description.setText(str_item_desc);
+     	tv_txt_product_detail_name.setText(str_item_name);
+
+        Toast.makeText(getActivity(), str_org_id+str_org_name+str_item_id, Toast.LENGTH_SHORT).show();
         TextView txtOldPrice = (TextView) rootView.findViewById(R.id.txt_product_detail_product_origin_price);
         txtOldPrice.setPaintFlags(txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         txtOldPrice.setTypeface(HBApplication.getInstance().getRegularFont());
@@ -234,11 +282,11 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
 	public void onClick(View v) {
       StringBuilder checkedcontacts= new StringBuilder();
       hbrf_al_selected_buddies=new ArrayList<String>();
-      System.out.println(".............."+madapter.mCheckStates.size());
+      //System.out.println(".............."+madapter.mCheckStates.size());
       for(int i = 0; i < hbha.list_response_numbers.size(); i++)
 
           {
-          if(madapter.mCheckStates.get(i)==true)
+          if(hbsa.mCheckStates.get(i)==true)
           {
                checkedcontacts.append(cn.get(i).getContactname());
                checkedcontacts.append("\n");
@@ -261,7 +309,7 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO Auto-generated method stub
-		madapter.toggle(position);
+		//madapter.toggle(position);
 	}
 	
     class MyAdapter extends BaseAdapter implements CompoundButton.OnCheckedChangeListener,Filterable
@@ -404,6 +452,36 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
     }   
 
     
+    @Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		try {
+			if(requestCode==REQUEST_CODE_CLICK_IMAGE && resultCode==Activity.RESULT_OK && null!=data){
+			  Bitmap photo = (Bitmap) data.getExtras().get("data"); 
+			  Uri tempUri = au.getImageUri(getActivity(), photo);
+			  String path=au.getRealPath(getActivity(),tempUri);
+			  ImageCompressionAsyncTask img=new ImageCompressionAsyncTask(getActivity(),true);
+			  uriSting=img.execute(path).get();
+			  encImage=au.encryptedImage(uriSting);
+				
+			}else {
+				Toast.makeText(getActivity(), "Please take a pic",Toast.LENGTH_LONG).show();
+			}
+		} catch (Exception e) {
+			Toast.makeText(getActivity(), "Something wrong", Toast.LENGTH_LONG)
+					.show();
+		}
+
+	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	class HBRRequestopinion extends AsyncTask<String, String, String> {
 		ProgressDialog progress;
 		@Override
@@ -419,12 +497,12 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
 		protected String doInBackground(String... params) {
 			try {
 				JSONObject jobj_itembo=new JSONObject();
-				jobj_itembo.put("itemDesc", "A&F Holister T- Shirt white color");
-				jobj_itembo.put("itemTitle", "Blue Colored T -Shirt ");
-				jobj_itembo.put("vendorId", "2");
-				jobj_itembo.put("vendorProductId", "210");
-				jobj_itembo.put("productUrl", "productUrl");
-				jobj_itembo.put("price", "12");
+				jobj_itembo.put("itemDesc", str_item_desc);
+				jobj_itembo.put("itemTitle", str_item_name);
+				jobj_itembo.put("vendorId", str_org_id);
+				jobj_itembo.put("vendorProductId", str_item_id);
+				jobj_itembo.put("productUrl", str_item_url);
+				jobj_itembo.put("price", str_item_price);
 				//String str_itembo=jobj_itembo.toString();
 				JSONObject jobj_req_opinion=new JSONObject();
 				jobj_req_opinion.put("itemBO", jobj_itembo);
