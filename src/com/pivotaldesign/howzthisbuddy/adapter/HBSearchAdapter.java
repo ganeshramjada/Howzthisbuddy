@@ -10,31 +10,36 @@ import com.pivotaldesign.howzthisbuddy.bean.ResponseContactInfBO;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class HBSearchAdapter extends BaseAdapter{
+public class HBSearchAdapter extends BaseAdapter implements OnCheckedChangeListener{
 
 	
 	// Declare Variables
+	 public SparseBooleanArray mCheckStates;
 		Context mContext;
 		LayoutInflater inflater;
-		private List<ResponseContactInfBO> worldpopulationlist = null;
-		private ArrayList<ResponseContactInfBO> arraylist;
+		private List<ResponseContactInfBO> responcecontactlist = null;
+		private ArrayList<ResponseContactInfBO> resplist;
 
 		public HBSearchAdapter(Context context,
-				List<ResponseContactInfBO> worldpopulationlist) {
+				List<ResponseContactInfBO> responcecontactlist) {
 			mContext = context;
-			this.worldpopulationlist = worldpopulationlist;
+            mCheckStates = new SparseBooleanArray(responcecontactlist.size());
+			this.responcecontactlist = responcecontactlist;
 			inflater = LayoutInflater.from(mContext);
-			this.arraylist = new ArrayList<ResponseContactInfBO>();
-			this.arraylist.addAll(worldpopulationlist);
+			this.resplist = new ArrayList<ResponseContactInfBO>();
+			this.resplist.addAll(responcecontactlist);
 		}
 
 		public class ViewHolder {
@@ -46,12 +51,12 @@ public class HBSearchAdapter extends BaseAdapter{
 
 		@Override
 		public int getCount() {
-			return worldpopulationlist.size();
+			return responcecontactlist.size();
 		}
 
 		@Override
 		public ResponseContactInfBO getItem(int position) {
-			return worldpopulationlist.get(position);
+			return responcecontactlist.get(position);
 		}
 
 		@Override
@@ -96,14 +101,14 @@ public class HBSearchAdapter extends BaseAdapter{
 			txtBuddyName.setTypeface(HBApplication.getInstance().getRegularFont());
 			txtBuddyPhoneNumber.setTypeface(HBApplication.getInstance().getRegularFont());
 			checkBuddySelected.setTag(position);
-			//checkBuddySelected.setOnCheckedChangeListener(this);
-			//checkBuddySelected.setChecked(mCheckStates.get(position, false));
+			checkBuddySelected.setOnCheckedChangeListener(this);
+			checkBuddySelected.setChecked(mCheckStates.get(position, false));
             
 			/*txtBuddyName.setText(cn.get(position).getContactname());
 			txtBuddyPhoneNumber.setText(cn.get(position).getContactnumber());*/
 			
-			txtBuddyName.setText(worldpopulationlist.get(position).getName().toString());
-			txtBuddyPhoneNumber.setText(worldpopulationlist.get(position).getPhonenum().toString());
+			txtBuddyName.setText(responcecontactlist.get(position).getName().toString());
+			txtBuddyPhoneNumber.setText(responcecontactlist.get(position).getPhonenum().toString());
             
             /*
             
@@ -119,19 +124,40 @@ public class HBSearchAdapter extends BaseAdapter{
 */
             return vi;
 		}
+		  public boolean isChecked(int position) {
+              return mCheckStates.get(position, false);
+          }
+
+   
+      public void setChecked(int position, boolean isChecked) {
+              mCheckStates.put(position, isChecked);
+              System.out.println("hello...........");
+              notifyDataSetChanged();
+          }
+
+        
+      public void toggle(int position) {
+              setChecked(position, !isChecked(position));
+          }
+      
+      public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+          // TODO Auto-generated method stub
+           mCheckStates.put((Integer) buttonView.getTag(), isChecked);         
+      }
+
 
 		
 		// Filter Class
 		public void filter(String charText) {
 			charText = charText.toLowerCase(Locale.getDefault());
-			worldpopulationlist.clear();
+			responcecontactlist.clear();
 			if (charText.length() == 0) {
-				worldpopulationlist.addAll(arraylist);
+				responcecontactlist.addAll(resplist);
 			} else {
-				for (ResponseContactInfBO wp : arraylist) {
+				for (ResponseContactInfBO wp : resplist) {
 					if (wp.getName().toLowerCase(Locale.getDefault())
 							.contains(charText)) {
-						worldpopulationlist.add(wp);
+						responcecontactlist.add(wp);
 					}
 				}
 			}
