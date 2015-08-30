@@ -42,7 +42,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;

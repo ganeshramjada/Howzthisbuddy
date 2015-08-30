@@ -4,12 +4,15 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.pivotaldesign.howzthisbuddy.util.SystemUiHider;
 
@@ -29,6 +32,7 @@ public class HBSplashActivity extends Activity {
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
      */
 	private SharedPreferences hbs_sp_loginprefs;
+	private SharedPreferences hbs_sp_callingapp_details;
     private static final boolean AUTO_HIDE = true;
 
     /**
@@ -64,8 +68,44 @@ public class HBSplashActivity extends Activity {
         final View contentView = findViewById(R.id.layout_splash);
 
         hbs_sp_loginprefs=getSharedPreferences("loginprefs", 0);
+        hbs_sp_callingapp_details=getSharedPreferences("callingappcredentials", 0);
         // Set up an instance of SystemUiHider to control the system UI for
         // this activity.
+        Intent intent = getIntent();
+        if(intent.getExtras()!=null){
+        	
+        	 String action = intent.getAction();
+             Log.v("Action", action);
+             String type = intent.getType();
+             Log.v("Type", type);
+             if (Intent.ACTION_SEND.equals(action) && type != null) {
+                 if ("text/plain".equals(type)) {
+                    // handleSendText(intent); // Handle text being sent
+                 	String str_org_id=intent.getExtras().getString("ORG_ID");
+                 	String str_org_name=intent.getExtras().getString("ORG_NAME");
+                 	String str_item_id=intent.getExtras().getString("ITEM_ID");
+                 	String str_item_name=intent.getExtras().getString("ITEM_NAME");
+                 	String str_item_desc=intent.getExtras().getString("ITEM_DESC");
+                 	String str_item_price=intent.getExtras().getString("ITEM_PRICE");
+                 	String str_item_url=intent.getExtras().getString("ITEM_URL");
+
+                 	Editor et=hbs_sp_callingapp_details.edit();
+                 	et.putString("ORG_ID", str_org_id);
+                 	et.putString("ORG_NAME", str_org_name);
+                 	et.putString("ITEM_ID", str_item_id);
+                 	et.putString("ITEM_NAME", str_item_name);
+                 	et.putString("ITEM_DESC", str_item_desc);
+                 	et.putString("ITEM_PRICE", str_item_price);
+                 	et.putString("ITEM_URL", str_item_url);
+                 	et.putString("status", "true");
+                 	et.commit();
+
+                 //	Toast.makeText(getApplicationContext(), str_item_url, Toast.LENGTH_SHORT).show();
+                 }
+             }
+             
+        }
+       
         mSystemUiHider = SystemUiHider.getInstance(this, contentView, HIDER_FLAGS);
         mSystemUiHider.setup();
         mSystemUiHider.setOnVisibilityChangeListener(new SystemUiHider.OnVisibilityChangeListener() {

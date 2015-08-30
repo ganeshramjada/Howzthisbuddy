@@ -84,6 +84,7 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 	private String hbha_str_getcontacts_resp;
 	private JSONArray hbh_jarr_contact_resp=null;
 	private SharedPreferences hbh_spf_contact_resp;
+	private SharedPreferences hbh_spf_callingapp_details;
 	private ResponseContactInfBO rcib;
 	public static ArrayList<ResponseContactInfBO> al_rcib=new ArrayList<ResponseContactInfBO>();
     protected void onCreate(android.os.Bundle savedInstanceState) {
@@ -92,6 +93,7 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 		setContentView(R.layout.activity_home);
 		hbh_spf_contact_resp=getSharedPreferences("resp_contacts_info",0);
         hbh_spf_login_details=getSharedPreferences("loginprefs",0);
+        hbh_spf_callingapp_details=getSharedPreferences("callingappcredentials", 0);
 
 		au=new AppUtilities(getApplicationContext());
 		// load slide menu items
@@ -160,11 +162,21 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 		if (savedInstanceState == null) {
 			// on first time display view for first nav item
 			String name=hbh_spf_login_details.getString("username", "");
-			if(name.length()==0){
-				displayView(4);
+			String status=hbh_spf_callingapp_details.getString("status", "");
+			if(status.length()==0){
+				if(name.length()==0){
+					displayView(4);
+					//displayView(0);
+				}else{
+					displayView(1);
+				}
 			}else{
-				displayView(1);
+				Editor et=hbh_spf_callingapp_details.edit();
+				et.putString("status", "");
+				et.commit();
+				displayView(0);
 			}
+			
 			
 		}
 		
@@ -385,7 +397,9 @@ public void fetchContacts() {
 			    Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
 			} 
 
-			Toast.makeText(getApplicationContext(), "Contacts Updated", Toast.LENGTH_SHORT).show();
+			
+			Toast.makeText(getApplicationContext(), "Contacts updated", Toast.LENGTH_SHORT).show();
+
 			//tv.setText(sb.toString());
 
 		}
