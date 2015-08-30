@@ -102,7 +102,12 @@ public class HBResponseFragment extends Fragment implements OnClickListener{
         
         TextView tv_txt_product_detail_name=(TextView) rootView.findViewById(R.id.txt_product_detail_name);
         tv_txt_product_detail_name.setTypeface(HBApplication.getInstance().getRegularFont());
+        if(!hbgf.opi_giv_det_bo.getOpinionsPending().get(pos).getItemBO().getItemTitle().toString().equalsIgnoreCase("")){
         tv_txt_product_detail_name.setText(hbgf.opi_giv_det_bo.getOpinionsPending().get(pos).getItemBO().getItemTitle());
+        }else{
+            tv_txt_product_detail_name.setText("");
+
+        }
         
         
         TextView tv_txt_product_detail_product_id=(TextView) rootView.findViewById(R.id.txt_product_detail_product_id);
