@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.pivotaldesign.howzthisbuddy.R;
 import com.pivotaldesign.howzthisbuddy.application.HBApplication;
 import com.pivotaldesign.howzthisbuddy.model.HBGiven;
+import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
 
 /**
  * @author Satish Kolawale
@@ -24,6 +25,7 @@ public class HBGivenAdapter extends ArrayAdapter<HBGiven> {
 
 	private Context _context = null;
 	private Typeface _typefaceRegular = null;
+	private AppUtilities au=new AppUtilities(_context);
 	
 	public HBGivenAdapter(Context context, HBGiven[] given) {
 		super(context, R.layout.layout_given_list_item, given);
@@ -64,16 +66,18 @@ public class HBGivenAdapter extends ArrayAdapter<HBGiven> {
 			convertView.setBackgroundColor(_context.getResources().getColor(R.color.color_given_response_bg));
 		else
 			convertView.setBackgroundColor(_context.getResources().getColor(android.R.color.white));*/
-			
-		if (holder.txtGivenName != null)
+		String  name;
+		if (holder.txtGivenName != null){
 			//holder.txtGivenName.setText(given.getGivenName());
-		holder.txtGivenName.setText(""+given.getMobilenumber());
-			 
-		if(holder.txtGivenCount != null)
+		name=au.getContactName(getContext(), given.getMobilenumber());
+		holder.txtGivenName.setText(""+given.getGivenName());
+		}
+		if(holder.txtGivenCount != null){
 			holder.txtGivenCount.setText("Given(" + given.getGivenCount() + ")");
-		
-		if(holder.txtPendingCount != null)
+		}
+		if(holder.txtPendingCount != null){
 			holder.txtPendingCount.setText("Pending(" + given.getPendingCount() + ")");
+		}
 		return convertView;
 	}
 }
