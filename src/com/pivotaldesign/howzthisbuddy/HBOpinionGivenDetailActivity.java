@@ -86,7 +86,7 @@ public class HBOpinionGivenDetailActivity extends FragmentActivity  implements H
         txtInviteByName.setTypeface(HBApplication.getInstance().getRegularFont());
         txtGivenCount.setTypeface(HBApplication.getInstance().getRegularFont());
         
-        txtInviteByName.setText("Invites By"+name);
+        txtInviteByName.setText("Invites By "+name);
         txtGivenCount.setText("Total:"+(Integer.parseInt(givencount)+Integer.parseInt(pendingcount)));
         
 		ViewPager pager = (ViewPager) findViewById(R.id.viewPager_given_detail);
