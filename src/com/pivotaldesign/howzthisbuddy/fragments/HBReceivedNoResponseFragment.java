@@ -35,7 +35,9 @@ public class HBReceivedNoResponseFragment extends Fragment {
 			if(name.equalsIgnoreCase(""+hbrf.al_opinionrespondedpendinglist1.get(index).getResponsePhoneNumber())){
 				
 			}*/
-			contacts[index] = ""+hbrf.al_opinionrespondedpendinglist1.get(index).getResponsePhoneNumber();
+			String number=Long.toString(hbrf.al_opinionrespondedpendinglist1.get(index).getResponsePhoneNumber());
+			String name=au.getContactName(getActivity(), number);
+			contacts[index] = ""+name;
 		}
 		
 		HBOpinionReceivedNoResponseAdapter adapter = new HBOpinionReceivedNoResponseAdapter(getActivity(), contacts);
