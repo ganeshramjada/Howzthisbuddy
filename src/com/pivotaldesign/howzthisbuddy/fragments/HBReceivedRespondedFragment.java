@@ -23,6 +23,7 @@ import com.pivotaldesign.howzthisbuddy.R;
 import com.pivotaldesign.howzthisbuddy.adapter.HBOpinionReceivedRespondedAdapter;
 import com.pivotaldesign.howzthisbuddy.application.HBApplication;
 import com.pivotaldesign.howzthisbuddy.model.HBOpinionReceivedDetail;
+import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
 
 /**
  * @author Satish Kolawale
@@ -32,6 +33,7 @@ public class HBReceivedRespondedFragment extends Fragment {
 
 	private ListView _listResponded = null;	 
 	private Dialog _commentDialog = null;
+	private AppUtilities au=new AppUtilities(getActivity());
 	int pos;
 	HBReceivedFragment hbrf=new HBReceivedFragment();
 	@Override
@@ -43,7 +45,9 @@ public class HBReceivedRespondedFragment extends Fragment {
 		HBOpinionReceivedDetail respondeds[] = new HBOpinionReceivedDetail[hbrf.al_opinionrespondedlist1.size()];
 		for (int index = 0; index < respondeds.length; index++) {
 			HBOpinionReceivedDetail responded = new HBOpinionReceivedDetail();
-			responded.setRespondedBuddyName("Walter White");
+			String number=Long.toString(hbrf.al_completeresp1.get(0).getOpinionRespondedList().get(index).getResponsePhoneNumber());
+			String name=au.getContactName(getActivity(), number);
+			responded.setRespondedBuddyName(name);
 			responded.setDate(new Date());
 			responded.setRespondedStatus(hbrf.al_completeresp1.get(0).getOpinionRespondedList().get(index).getOpinionTypeCode());
 			respondeds[index] = responded;
