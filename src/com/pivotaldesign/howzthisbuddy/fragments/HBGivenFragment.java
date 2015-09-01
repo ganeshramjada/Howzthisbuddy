@@ -134,6 +134,7 @@ public class HBGivenFragment extends Fragment {
 		}
 	}
 
+	///919441907588
 
 	class HBgetOpinionsToBeGivenList extends AsyncTask<String, String, String> {
 		ProgressDialog progress;
@@ -168,7 +169,9 @@ public class HBGivenFragment extends Fragment {
 					HBGiven given = new HBGiven();
 					given.setId(i);
 					given.setMobilenumber(hbgf_ja_resp.getJSONObject(i).getString("requestPhoneNumber"));
-					given.setGivenName("Walter White " + i);
+					String number=hbgf_ja_resp.getJSONObject(i).getString("requestPhoneNumber");
+					String name=au.getContactName(getActivity(), number);
+					given.setGivenName(name);
 					given.setGivenCount(hbgf_ja_resp.getJSONObject(i).getInt("opinionGivenCount"));
 					given.setPendingCount(hbgf_ja_resp.getJSONObject(i).getInt("opinionPendingCount"));
 					givens[i] = given;
