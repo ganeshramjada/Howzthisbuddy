@@ -320,7 +320,7 @@ public class AppUtilities {
 	    if (cursor == null) {
 	        return null;
 	    }
-	    String contactName = null;
+	    String contactName = phoneNumber;
 	    if(cursor.moveToFirst()) {
 	        contactName = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
 	    }
