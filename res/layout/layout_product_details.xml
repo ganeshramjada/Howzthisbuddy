@@ -22,8 +22,8 @@
 
             <ImageView
                 android:id="@+id/img_product_detail_picture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
                 android:layout_gravity="start"
                 android:src="@drawable/shoe_big" />
         </LinearLayout>
