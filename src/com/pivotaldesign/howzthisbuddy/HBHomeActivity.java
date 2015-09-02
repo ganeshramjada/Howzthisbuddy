@@ -6,9 +6,11 @@ package com.pivotaldesign.howzthisbuddy;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.pivotaldesign.howzthisbuddy.adapter.HBDrawerListAdapter;
 import com.pivotaldesign.howzthisbuddy.bean.ResponseContactInfBO;
 import com.pivotaldesign.howzthisbuddy.fragments.HBAboutFragment;
@@ -17,30 +19,27 @@ import com.pivotaldesign.howzthisbuddy.fragments.HBOfferFragment;
 import com.pivotaldesign.howzthisbuddy.fragments.HBProfileFragment;
 import com.pivotaldesign.howzthisbuddy.fragments.HBReceivedFragment;
 import com.pivotaldesign.howzthisbuddy.fragments.HBRequestLaunchFragment;
-import com.pivotaldesign.howzthisbuddy.fragments.HBResponseFragment;
 import com.pivotaldesign.howzthisbuddy.fragments.HBSettingsFragment;
 import com.pivotaldesign.howzthisbuddy.fragments.HBShareFragment;
 import com.pivotaldesign.howzthisbuddy.model.HBConstants;
 import com.pivotaldesign.howzthisbuddy.model.HBDrawerItem;
 import com.pivotaldesign.howzthisbuddy.model.HBNotifier;
 import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -88,6 +87,9 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 	private SharedPreferences hbh_spf_callingapp_details;
 	private ResponseContactInfBO rcib;
 	public static ArrayList<ResponseContactInfBO> al_rcib=new ArrayList<ResponseContactInfBO>();
+	
+	
+	
     protected void onCreate(android.os.Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -105,21 +107,21 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
-
 		
 		
 		navDrawerItems = new ArrayList<HBDrawerItem>();
 
+		
 		// adding nav drawer items to array
+		//navDrawerItems.add(new HBDrawerItem(navMenuTitles[0], R.drawable.opinions_received));
 		navDrawerItems.add(new HBDrawerItem(navMenuTitles[0], R.drawable.opinions_received));
-		navDrawerItems.add(new HBDrawerItem(navMenuTitles[1], R.drawable.opinions_received));
-		navDrawerItems.add(new HBDrawerItem(navMenuTitles[2], R.drawable.opinions_given));
-		navDrawerItems.add(new HBDrawerItem(navMenuTitles[3], R.drawable.opinions_given));
-		navDrawerItems.add(new HBDrawerItem(navMenuTitles[4], R.drawable.profile));
-		navDrawerItems.add(new HBDrawerItem(navMenuTitles[5], R.drawable.settings));
-		navDrawerItems.add(new HBDrawerItem(navMenuTitles[6], R.drawable.share_with_friends));
-		navDrawerItems.add(new HBDrawerItem(navMenuTitles[7], R.drawable.hows));
-		navDrawerItems.add(new HBDrawerItem(navMenuTitles[8], R.drawable.offers));
+		navDrawerItems.add(new HBDrawerItem(navMenuTitles[1], R.drawable.opinions_given));
+		//navDrawerItems.add(new HBDrawerItem(navMenuTitles[3], R.drawable.opinions_given));
+		navDrawerItems.add(new HBDrawerItem(navMenuTitles[2], R.drawable.profile));
+		navDrawerItems.add(new HBDrawerItem(navMenuTitles[3], R.drawable.settings));
+		navDrawerItems.add(new HBDrawerItem(navMenuTitles[4], R.drawable.share_with_friends));
+		navDrawerItems.add(new HBDrawerItem(navMenuTitles[5], R.drawable.hows));
+		navDrawerItems.add(new HBDrawerItem(navMenuTitles[6], R.drawable.offers));
 		
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
@@ -166,16 +168,30 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 			String status=hbh_spf_callingapp_details.getString("status", "");
 			if(status.length()==0){
 				if(name.length()==0){
-					displayView(4);
+					displayView(2);
 					//displayView(0);
 				}else{
-					displayView(1);
+					displayView(0);
 				}
 			}else{
 				Editor et=hbh_spf_callingapp_details.edit();
 				et.putString("status", "");
 				et.commit();
-				displayView(0);
+				/*Intent in=new Intent();
+				in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				in.setClass(HBHomeActivity.this, HBRequestLaunchFragment.class);
+				getApplicationContext().startActivity(in);*/
+				
+				FragmentManager fm = getFragmentManager();
+
+				FragmentTransaction ft = fm.beginTransaction();
+
+				HBRequestLaunchFragment llf = new HBRequestLaunchFragment();
+
+				ft.replace(R.id.frame_container, llf);
+
+				ft.commit();
+
 			}
 			
 			
@@ -225,31 +241,31 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 		Fragment fragment = null;
 		switch (position) {
 		
-			case 0:
+			/*case 0:
 				fragment = new HBRequestLaunchFragment();
-				break;
-			case 1:
+				break;*/
+			case 0:
 				fragment = new HBReceivedFragment();
 				break;
-			case 2:
+			case 1:
 				fragment = new HBGivenFragment(this);
 				break;
-			case 3:
+			/*case 3:
 				fragment = new HBResponseFragment(this);
-				break;
-			case 4:
+				break;*/
+			case 2:
 				fragment = new HBProfileFragment();
 				break;
-			case 5:
+			case 3:
 				fragment = new HBSettingsFragment();
 				break;
-			case 6:
+			case 4:
 				fragment = new HBShareFragment();
 				break;				
-			case 7:
+			case 5:
 				fragment = new HBAboutFragment();
 				break;
-			case 8:
+			case 6:
 				fragment = new HBOfferFragment();
 			default:
 				break;
