@@ -2,6 +2,8 @@ package com.pivotaldesign.howzthisbuddy;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -14,6 +16,17 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.pivotaldesign.howzthisbuddy.bean.ResponseContactInfBO;
+import com.pivotaldesign.howzthisbuddy.model.HBConstants;
+import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
 import com.pivotaldesign.howzthisbuddy.util.SystemUiHider;
 
 
@@ -34,6 +47,25 @@ public class HBSplashActivity extends Activity {
 	private SharedPreferences hbs_sp_loginprefs;
 	private SharedPreferences hbs_sp_callingapp_details;
     private static final boolean AUTO_HIDE = true;
+    private HBHomeActivity hbha=new HBHomeActivity();
+    
+    
+    private Thread thread;
+	public Handler handler = new Handler();
+	private String hbha_str_getcontacts_resp;
+	private ArrayList<String> list_numbers;
+	private AppUtilities au;
+	public static ArrayList<String> list_response_numbers;
+	public static ArrayList<String> list_response_name;
+	private JSONArray hbh_jarr_contact_resp=null;
+	private SharedPreferences hbh_spf_contact_resp;
+	private ResponseContactInfBO rcib;
+	public static ArrayList<ResponseContactInfBO> al_rcib=new ArrayList<ResponseContactInfBO>();
+	
+
+
+
+
 
     /**
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
@@ -67,10 +99,15 @@ public class HBSplashActivity extends Activity {
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.layout_splash);
 
+        list_numbers=new ArrayList<String>();
+        au=new AppUtilities(getApplicationContext());
+		hbh_spf_contact_resp=getSharedPreferences("resp_contacts_info",0);
+
         hbs_sp_loginprefs=getSharedPreferences("loginprefs", 0);
         hbs_sp_callingapp_details=getSharedPreferences("callingappcredentials", 0);
         // Set up an instance of SystemUiHider to control the system UI for
         // this activity.
+        fetchContacts();
         Intent intent = getIntent();
         if(intent.getExtras()!=null){
         	
@@ -230,4 +267,100 @@ public class HBSplashActivity extends Activity {
 		}
 		
 	}
+
+
+
+
+public void fetchContacts() {
+		
+		
+		/*progress = new ProgressDialog(HBHomeActivity.this);
+		progress.setCancelable(false);
+		progress.setMessage("Please wait.....");
+		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progress.setProgress(0);
+		progress.setMax(100);
+		progress.show();*/
+		thread = new Thread() {
+			public void run() {
+		list_numbers=new ArrayList<String>();
+
+		list_numbers=au.fetchContacts(getApplicationContext());
+		
+		HashSet hs = new HashSet();
+		hs.addAll(list_numbers);
+		list_numbers.clear();
+		list_numbers.addAll(hs);
+		
+		String al_nums=list_numbers.toString().replaceAll("\\s", "");
+		
+		hbha_str_getcontacts_resp=au.makePostRequest(HBConstants.getcontatcsinfo, al_nums);
+
+	
+			handler.post(createUI);
+		}
+	};
+	thread.start();
+
+}
+	
+	final Runnable createUI = new Runnable() {
+		public void run() {
+			//progress.dismiss();
+			if(hbha_str_getcontacts_resp!=null){
+				try {
+					list_response_numbers=new ArrayList<String>();
+					list_response_name=new ArrayList<String>();
+					 hbh_jarr_contact_resp=new JSONArray(hbha_str_getcontacts_resp.toString());
+					 Editor editor = hbh_spf_contact_resp.edit();
+					for(int i=0;i<hbh_jarr_contact_resp.length();i++){
+						JSONObject c = hbh_jarr_contact_resp.getJSONObject(i);
+
+						String phonenumber=c.getString("phoneNumber");
+						String profilepic=c.getString("profilePic");
+						editor.putString(phonenumber, profilepic);
+						String name=au.getContactName(getApplicationContext(), phonenumber);
+						list_response_numbers.add(phonenumber);
+						list_response_name.add(name);
+						rcib=new ResponseContactInfBO();
+						rcib.setName(name);
+						rcib.setPhonenum(phonenumber);
+						al_rcib.add(rcib);
+					}
+					 editor.commit();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			Map<String, ?> allEntries = hbh_spf_contact_resp.getAll();
+			for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+			    Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+			} 
+
+			
+			Toast.makeText(getApplicationContext(), "Contacts updated", Toast.LENGTH_SHORT).show();
+
+			//tv.setText(sb.toString());
+
+		}
+	};
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
