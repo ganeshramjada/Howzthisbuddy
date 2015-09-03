@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.pivotaldesign.howzthisbuddy.HBHomeActivity;
+import com.pivotaldesign.howzthisbuddy.HBSplashActivity;
 import com.pivotaldesign.howzthisbuddy.R;
 import com.pivotaldesign.howzthisbuddy.adapter.HBSearchAdapter;
 import com.pivotaldesign.howzthisbuddy.application.HBApplication;
@@ -84,6 +85,7 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
 	private String number;
 	private String hbrf_str_req_opinion;
 	private HBHomeActivity hbha=new HBHomeActivity();
+	private HBSplashActivity hbsplashact=new HBSplashActivity();
 	private HBSearchAdapter hbsa;//new HBSearchAdapter(getActivity(), hbrf_al_selected_buddies);
 	private SharedPreferences hbrl_spf_callingapp_creds;
 	
@@ -213,7 +215,7 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
 				ListView listBuddy = (ListView) rootView.findViewById(R.id.list_received_buddy_contact);
 				 /*adapter = new HBContactsAdapter(getActivity(),
 						R.layout.layout_received_buddy_contact_item, contactnumbers);*/
-				hbsa=new HBSearchAdapter(getActivity(), hbha.al_rcib);
+				hbsa=new HBSearchAdapter(getActivity(), hbsplashact.al_rcib);
 				listBuddy.setAdapter(hbsa);
 				
 				listBuddy.setItemsCanFocus(false);
@@ -295,14 +297,14 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
       StringBuilder checkedcontacts= new StringBuilder();
       hbrf_al_selected_buddies=new ArrayList<String>();
       //System.out.println(".............."+madapter.mCheckStates.size());
-      for(int i = 0; i < hbha.list_response_numbers.size(); i++)
+      for(int i = 0; i < hbsplashact.list_response_numbers.size(); i++)
 
           {
           if(hbsa.mCheckStates.get(i)==true)
           {
                checkedcontacts.append(cn.get(i).getContactname());
                checkedcontacts.append("\n");
-               hbrf_al_selected_buddies.add(hbha.list_response_numbers.get(i).toString().replaceAll("\\s", ""));
+               hbrf_al_selected_buddies.add(hbsplashact.list_response_numbers.get(i).toString().replaceAll("\\s", ""));
 
           }
           else
@@ -332,7 +334,7 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
         CheckBox cb;
         MyAdapter()
         {
-            mCheckStates = new SparseBooleanArray(hbha.list_response_numbers.size());
+            mCheckStates = new SparseBooleanArray(hbsplashact.list_response_numbers.size());
             mInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
         
@@ -340,7 +342,7 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-            return hbha.al_rcib.size();
+            return hbsplashact.al_rcib.size();
         }
 
         @Override
@@ -376,8 +378,8 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
 			/*txtBuddyName.setText(cn.get(position).getContactname());
 			txtBuddyPhoneNumber.setText(cn.get(position).getContactnumber());*/
 			
-			txtBuddyName.setText(hbha.al_rcib.get(position).getName().toString());
-			txtBuddyPhoneNumber.setText(hbha.al_rcib.get(position).getPhonenum().toString());
+			txtBuddyName.setText(hbsplashact.al_rcib.get(position).getName().toString());
+			txtBuddyPhoneNumber.setText(hbsplashact.al_rcib.get(position).getPhonenum().toString());
             
             /*
             
@@ -430,7 +432,7 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
 	                if (results.count == 0) {
 	                    notifyDataSetInvalidated();
 	                }else{
-	                    hbha.al_rcib = (ArrayList<ResponseContactInfBO>) results.values;
+	                	hbsplashact.al_rcib = (ArrayList<ResponseContactInfBO>) results.values;
 	                    notifyDataSetChanged();
 	                }
 	            }
@@ -441,11 +443,11 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
 	                FilterResults results = new FilterResults();
 
 	                if (constraint == null || constraint.length() == 0) {
-	                    results.values = hbha.al_rcib;
-	                    results.count = hbha.al_rcib.size();
+	                    results.values = hbsplashact.al_rcib;
+	                    results.count = hbsplashact.al_rcib.size();
 	                }else{
 	                    ArrayList<ResponseContactInfBO> filter_items = new ArrayList<ResponseContactInfBO>(); 
-	                    for (ResponseContactInfBO item : hbha.al_rcib) {
+	                    for (ResponseContactInfBO item : hbsplashact.al_rcib) {
 	                        if (item.getName().toLowerCase().startsWith(constraint.toString().toLowerCase())) {
 	                            filter_items.add(item);
 	                        }
