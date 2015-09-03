@@ -77,7 +77,7 @@ public class HBSplashActivity extends Activity {
         	 String action = intent.getAction();
              Log.v("Action", action);
              String type = intent.getType();
-             Log.v("Type", type);
+            // Log.v("Type", type);
              if (Intent.ACTION_SEND.equals(action) && type != null) {
                  if ("text/plain".equals(type)) {
                     // handleSendText(intent); // Handle text being sent
