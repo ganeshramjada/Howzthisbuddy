@@ -32,6 +32,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -193,13 +194,11 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 				ft.commit();
 
 			}
-			
-			
 		}
 		
 		///enable to update contacts
 		
-		fetchContacts();
+		//fetchContacts();
 	}
 	
 	
@@ -346,16 +345,16 @@ public class HBHomeActivity extends Activity implements HBNotifier{
     }
 	
 	
-public void fetchContacts() {
+public void fetchContacts(Context c) {
 		
 		
-		progress = new ProgressDialog(HBHomeActivity.this);
+		/*progress = new ProgressDialog(HBHomeActivity.this);
 		progress.setCancelable(false);
 		progress.setMessage("Please wait.....");
 		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		progress.setProgress(0);
 		progress.setMax(100);
-		progress.show();
+		progress.show();*/
 		thread = new Thread() {
 			public void run() {
 		list_numbers=new ArrayList<String>();
@@ -381,7 +380,7 @@ public void fetchContacts() {
 	
 	final Runnable createUI = new Runnable() {
 		public void run() {
-			progress.dismiss();
+			//progress.dismiss();
 			if(hbha_str_getcontacts_resp!=null){
 				try {
 					list_response_numbers=new ArrayList<String>();
