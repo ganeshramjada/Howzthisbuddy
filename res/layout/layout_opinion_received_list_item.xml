@@ -41,9 +41,9 @@
                 android:layout_marginBottom="5dp"
                 android:lines="3"
                 android:maxLines="3"
-                android:textColor="#B1B1B1"
                 android:text="The jumba shoes look like fun but means business Wear it byself more>"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                android:textColor="#B1B1B1" />
 
             <TextView
                 android:id="@+id/txt_opinion_received_list_item_selfie"
@@ -51,24 +51,35 @@
                 android:layout_height="wrap_content"
                 android:background="@color/color_button_bg"
                 android:drawableLeft="@drawable/camera"
+                android:layout_marginBottom="5dp"
                 android:gravity="center"
                 android:paddingBottom="2dp"
                 android:paddingEnd="5dp"
-                android:paddingRight="5dp"
                 android:paddingLeft="3dp"
+                android:paddingRight="5dp"
                 android:paddingStart="3dp"
                 android:paddingTop="2dp"
                 android:text="Capture Selfie"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
+            
+            <TextView
+            android:id="@+id/txt_opinion_received_list_item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_button_bg"
+            android:padding="5dp"
+            android:text="Now: $49.99"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="3dp"
-        android:weightSum="2" >
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="0dp"
@@ -84,46 +95,41 @@
             android:orientation="horizontal" >
         </LinearLayout>
 
+        
         <TextView
             android:id="@+id/txt_opinion_received_list_item_origin_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:text="Orig: $85.00"
             android:layout_gravity="center_vertical"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/color_button_bg"
+            android:text="Orig: $85.00"
             android:visibility="invisible"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
 
-        <TextView
-            android:id="@+id/txt_opinion_received_list_item_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/color_button_bg"
-            android:padding="5dp"
-            android:text="Now: $49.99"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
+        
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:background="#EBEBEB"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp"
         android:padding="5dp"
-        android:layout_marginBottom="5dp"
         android:weightSum="2" >
 
         <TextView
             android:id="@+id/txt_opinion_received_list_item_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:layout_gravity="center_vertical"
             android:layout_weight="1" />
 
         <LinearLayout

@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/txt_received_invite_buddy"
+        android:layout_alignParentTop="true"
         android:orientation="vertical" >
 
         <include layout="@layout/layout_user_profile" />
