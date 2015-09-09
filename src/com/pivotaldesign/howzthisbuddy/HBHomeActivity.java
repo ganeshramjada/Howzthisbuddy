@@ -25,6 +25,7 @@ import com.pivotaldesign.howzthisbuddy.model.HBConstants;
 import com.pivotaldesign.howzthisbuddy.model.HBDrawerItem;
 import com.pivotaldesign.howzthisbuddy.model.HBNotifier;
 import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
+import com.pivotaldesign.howzthisbuddy.util.CheckInternet;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -87,6 +88,7 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 	private SharedPreferences hbh_spf_contact_resp;
 	private SharedPreferences hbh_spf_callingapp_details;
 	private ResponseContactInfBO rcib;
+	private CheckInternet ci;
 	public static ArrayList<ResponseContactInfBO> al_rcib=new ArrayList<ResponseContactInfBO>();
 	
 	
@@ -95,6 +97,7 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_home);
+		ci=new CheckInternet(getApplicationContext());
 		hbh_spf_contact_resp=getSharedPreferences("resp_contacts_info",0);
         hbh_spf_login_details=getSharedPreferences("loginprefs",0);
         hbh_spf_callingapp_details=getSharedPreferences("callingappcredentials", 0);
@@ -346,7 +349,7 @@ public class HBHomeActivity extends Activity implements HBNotifier{
 	
 	
 public void fetchContacts(Context c) {
-		
+	if(ci.isConnectingToInternet()){
 		
 		/*progress = new ProgressDialog(HBHomeActivity.this);
 		progress.setCancelable(false);
@@ -368,14 +371,19 @@ public void fetchContacts(Context c) {
 		
 		String al_nums=list_numbers.toString().replaceAll("\\s", "");
 		
+		
 		hbha_str_getcontacts_resp=au.makePostRequest(HBConstants.getcontatcsinfo, al_nums);
 
 	
 			handler.post(createUI);
+		
 		}
 	};
 	thread.start();
-
+	}
+	else{
+		Toast.makeText(getApplicationContext(), "Please connect to network", Toast.LENGTH_SHORT).show();
+	}
 }
 	
 	final Runnable createUI = new Runnable() {
