@@ -43,6 +43,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * @author Satish Kolawale
@@ -111,12 +112,20 @@ public class HBGivenFragment extends Fragment {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				if(ci.isConnectingToInternet()){
 				new HBgetOpinionsToBeGivenListDetail().execute("");
-				
+				}
+				else{
+					Toast.makeText(getActivity(), "Please connect to network", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
+        if(ci.isConnectingToInternet()){
         new HBgetOpinionsToBeGivenList().execute("");
-        
+        }
+		else{
+			Toast.makeText(getActivity(), "Please connect to network", Toast.LENGTH_SHORT).show();
+		}
         
         return rootView;
     }
