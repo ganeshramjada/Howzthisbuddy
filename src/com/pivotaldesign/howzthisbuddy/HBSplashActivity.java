@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import com.pivotaldesign.howzthisbuddy.bean.ResponseContactInfBO;
 import com.pivotaldesign.howzthisbuddy.model.HBConstants;
 import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
+import com.pivotaldesign.howzthisbuddy.util.CheckInternet;
 import com.pivotaldesign.howzthisbuddy.util.SystemUiHider;
 
 
@@ -47,8 +48,8 @@ public class HBSplashActivity extends Activity {
 	private SharedPreferences hbs_sp_loginprefs;
 	private SharedPreferences hbs_sp_callingapp_details;
     private static final boolean AUTO_HIDE = true;
-    private HBHomeActivity hbha=new HBHomeActivity();
-    
+    private HBHomeActivity hbha;
+    private CheckInternet ci;
     
     private Thread thread;
 	public Handler handler = new Handler();
@@ -95,7 +96,8 @@ public class HBSplashActivity extends Activity {
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		getActionBar().hide();
         setContentView(R.layout.activity_splash);
-
+        ci=new CheckInternet(getApplicationContext());
+        hbha=new HBHomeActivity();
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.layout_splash);
 
@@ -272,7 +274,7 @@ public class HBSplashActivity extends Activity {
 
 
 public void fetchContacts() {
-		
+	if(ci.isConnectingToInternet()){
 		
 		/*progress = new ProgressDialog(HBHomeActivity.this);
 		progress.setCancelable(false);
@@ -301,7 +303,10 @@ public void fetchContacts() {
 		}
 	};
 	thread.start();
-
+}
+else{
+	Toast.makeText(getApplicationContext(), "Please connect to network", Toast.LENGTH_SHORT).show();
+}
 }
 	
 	final Runnable createUI = new Runnable() {
