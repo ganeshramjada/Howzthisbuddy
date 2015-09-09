@@ -23,6 +23,7 @@ import com.pivotaldesign.howzthisbuddy.fragments.HBReceivedNoResponseFragment;
 import com.pivotaldesign.howzthisbuddy.fragments.HBReceivedRespondedFragment;
 import com.pivotaldesign.howzthisbuddy.model.HBConstants;
 import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
+import com.pivotaldesign.howzthisbuddy.util.CheckInternet;
 import com.pivotaldesign.howzthisbuddy.util.HBCustomShapeDrawable;
 import com.pivotaldesign.howzthisbuddy.fragments.*;
 import android.annotation.SuppressLint;
@@ -79,6 +80,7 @@ public class HBOpinionReceivedDetailActivity extends FragmentActivity {
 	 private Thread thread;
 		private Handler handler = new Handler();
 		ProgressDialog progress = null;
+		private CheckInternet ci=new CheckInternet(getApplicationContext());
      //private Long itemid,mobnum;
 
 	@SuppressWarnings("deprecation")
@@ -313,6 +315,7 @@ public class HBOpinionReceivedDetailActivity extends FragmentActivity {
 					e.printStackTrace();
 				}
 			String reg_params = hbr_jobj.toString();
+			
 		    hbr_str_captureopinion_resp=au.makeRequeststatusline(HBConstants.updateOpinionItemSelfieDetails, reg_params);
 			return hbr_str_captureopinion_resp;
 		}
