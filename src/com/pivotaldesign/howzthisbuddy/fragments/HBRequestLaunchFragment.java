@@ -26,6 +26,8 @@ import com.pivotaldesign.howzthisbuddy.util.HBCustomShapeDrawable;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -143,7 +145,7 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
         TextView tv_txt_product_detail_price=(TextView) rootView.findViewById(R.id.txt_product_detail_price);
         tv_txt_product_detail_price.setTypeface(HBApplication.getInstance().getBoldFont());
         TextView tv_txt_product_detail_selfie=(TextView) rootView.findViewById(R.id.txt_product_detail_selfie);
-        tv_txt_product_detail_selfie.setTypeface(HBApplication.getInstance().getRegularFont());
+        tv_txt_product_detail_selfie.setTypeface(HBApplication.getInstance().getBoldFont());
         tv_txt_received_invite_buddy=(TextView) rootView.findViewById(R.id.txt_received_invite_buddy);
         tv_txt_received_invite_buddy.setTypeface(HBApplication.getInstance().getRegularFont());
         tv_txt_received_invite_buddy.setOnClickListener(this);
@@ -177,7 +179,7 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-     	tv_txt_product_detail_price.setText("Price:"+str_item_price);
+     	tv_txt_product_detail_price.setText("Price:$"+str_item_price);
      	tv_txt_product_detail_product_description.setText(str_item_desc);
      	tv_txt_product_detail_name.setText(str_item_name);
      	iv_img_product_detail_picture.setImageBitmap(bmp);
@@ -540,6 +542,18 @@ public class HBRequestLaunchFragment extends Fragment implements OnClickListener
 			if(hbrf_str_req_opinion.equalsIgnoreCase("HTTP/1.1 200 OK")){
 
 				Toast.makeText(getActivity(), "Request Sent", Toast.LENGTH_SHORT).show();
+				/*Intent in=new Intent();
+				in.setClass(getActivity(), HBReceivedFragment.class);
+				startActivity(in);*/
+				FragmentManager fm = getFragmentManager();
+
+				FragmentTransaction ft = fm.beginTransaction();
+
+				HBReceivedFragment llf = new HBReceivedFragment();
+
+				ft.replace(R.id.frame_container, llf);
+
+				ft.commit();
 			}else{
 				Toast.makeText(getActivity(), "Invalid request", Toast.LENGTH_SHORT).show();
 			}

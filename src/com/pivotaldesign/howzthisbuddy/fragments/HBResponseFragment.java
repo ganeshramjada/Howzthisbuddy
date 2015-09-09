@@ -242,7 +242,11 @@ public class HBResponseFragment extends Fragment implements OnClickListener{
 					jobj.put("opinionTypeCode", opiniontype);
 					jobj.put("comments", comments);
 					respondopinion=jobj.toString();
+					if(ci.isConnectingToInternet()){
 					new HBrespondopinion().execute("");
+					}else{
+						Toast.makeText(getActivity(), "Please connect to network", Toast.LENGTH_SHORT).show();
+					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

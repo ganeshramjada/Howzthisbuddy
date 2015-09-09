@@ -136,7 +136,12 @@ public class HBReceivedFragment extends Fragment{
 				hbrf_lng_selected_itemid=al_completeresp.get(position).getItemBO().getItemId();
 				hbrf_lng_phonenumber=al_completeresp.get(position).getPhoneNumber();
 				pos=position;
+				if(ci.isConnectingToInternet()){
 				 new HBRgetselecteditemopinionrequests().execute("");
+				}else{
+			    	Toast.makeText(getActivity(), "Please connect to Network", Toast.LENGTH_SHORT).show();	
+
+		        }
 			}
 		});
         
@@ -543,10 +548,10 @@ public class HBReceivedFragment extends Fragment{
 			if(!al_completeresp.get(position).getItemSelfieDetailsBO().getSelfiePic().toString().equalsIgnoreCase("null")){
 				hbrf_tv_txt_opinion_received_list_item_selfie.setText("View Selfie");
 			}else{
-				hbrf_tv_txt_opinion_received_list_item_selfie.setText("Capture Selfie");
+				hbrf_tv_txt_opinion_received_list_item_selfie.setText("View Selfie");
 			}
 			hbrf_tv_txt_opinion_received_list_item_selfie.setTag(position);
-			hbrf_tv_txt_opinion_received_list_item_selfie.setOnClickListener(new OnClickListener() {
+			/*hbrf_tv_txt_opinion_received_list_item_selfie.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					int p = ((Integer) v.getTag()) + 1;
@@ -556,7 +561,7 @@ public class HBReceivedFragment extends Fragment{
 					hbrf_lng_selected_itemselfieid=al_completeresp.get(position).getItemSelfieDetailsBO().getItemSelfieDetailsId();
 
 				}
-			});
+			});*/
 			hbrf_tv_txt_opinion_received_list_item_price.setText("Price:$"+al_completeresp.get(position).getItemBO().getPrice());
 			hbrf_tv_txt_opinion_received_list_item_like.setText(""+al_completeresp.get(position).getLikeCount());
 			hbrf_tv_txt_opinion_received_list_item_not_sure.setText(""+al_completeresp.get(position).getMayBeCount());
@@ -570,7 +575,7 @@ public class HBReceivedFragment extends Fragment{
 	}
 
 
-	@Override
+/*	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		try {
@@ -591,7 +596,7 @@ public class HBReceivedFragment extends Fragment{
 
 	}
 
-
+*/
 
 	class HBRsendcaptureselfie extends AsyncTask<String, String, String> {
 		ProgressDialog progress;
