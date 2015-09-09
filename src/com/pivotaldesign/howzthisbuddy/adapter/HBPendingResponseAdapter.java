@@ -67,7 +67,7 @@ public class HBPendingResponseAdapter extends ArrayAdapter<HBGivenResponse> {
 		String pic=given.getSelfieUrl();
 		if(holder.txtPendingResponseSelfie != null){
 			if(pic.equalsIgnoreCase("null")){
-				holder.txtPendingResponseSelfie.setText("Capture Slefie");
+				holder.txtPendingResponseSelfie.setText("View Slefie");
 			}else{
 				holder.txtPendingResponseSelfie.setText("View Selfie");
 			}
