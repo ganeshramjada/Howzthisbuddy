@@ -71,7 +71,7 @@ public class HBGivenResponseAdapter extends ArrayAdapter<HBGivenResponse> {
 		String pic=given.getSelfieUrl();
 		if(holder.txtGivenResponseSelfie != null){
 			if(pic.equalsIgnoreCase("null")){
-				holder.txtGivenResponseSelfie.setText("Capture Slefie");
+				holder.txtGivenResponseSelfie.setText("View Slefie");
 			}else{
 				holder.txtGivenResponseSelfie.setText("View Selfie");
 			}
