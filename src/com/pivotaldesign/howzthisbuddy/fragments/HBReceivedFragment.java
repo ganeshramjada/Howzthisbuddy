@@ -346,7 +346,6 @@ public class HBReceivedFragment extends Fragment{
 			hbreceivedfragment_hm_getselecteditemopinionreq1.put("phoneNumber", ""+hbrf_lng_phonenumber);
 			hbreceivedfragment_hm_getselecteditemopinionreq1.put("itemId",""+hbrf_lng_selected_itemid);
 		    String reg_params = hbreceivedfrag_gson_req1.toJson(hbreceivedfragment_hm_getselecteditemopinionreq1);
-		   
 		    hbr_str_getselecteditemopinion_resp1=au.makePostRequest(HBConstants.getOpinionsRecievedDetail, reg_params);
 			  
 				return hbr_str_getselecteditemopinion_resp1;
