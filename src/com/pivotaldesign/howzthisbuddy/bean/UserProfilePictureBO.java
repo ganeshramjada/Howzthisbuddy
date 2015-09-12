@@ -7,6 +7,24 @@ public class UserProfilePictureBO extends HowZThisBuddyBaseBO {
 
 	private long phoneNumber;
 	private byte[] profilePic;
+	private String profilePicS3Url;
+	private boolean downloadIndicator;
+
+	public String getProfilePicS3Url() {
+		return profilePicS3Url;
+	}
+
+	public void setProfilePicS3Url(String profilePicS3Url) {
+		this.profilePicS3Url = profilePicS3Url;
+	}
+
+	public boolean isDownloadIndicator() {
+		return downloadIndicator;
+	}
+
+	public void setDownloadIndicator(boolean downloadIndicator) {
+		this.downloadIndicator = downloadIndicator;
+	}
 
 	public UserProfilePictureBO() {
 
