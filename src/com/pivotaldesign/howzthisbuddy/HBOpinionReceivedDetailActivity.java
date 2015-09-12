@@ -80,7 +80,7 @@ public class HBOpinionReceivedDetailActivity extends FragmentActivity {
 	 private Thread thread;
 		private Handler handler = new Handler();
 		ProgressDialog progress = null;
-		private CheckInternet ci=new CheckInternet(getApplicationContext());
+		private CheckInternet ci;
      //private Long itemid,mobnum;
 
 	@SuppressWarnings("deprecation")
@@ -91,6 +91,7 @@ public class HBOpinionReceivedDetailActivity extends FragmentActivity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		hbrf=new HBReceivedFragment();
         au=new AppUtilities(getApplicationContext());
+        ci=new CheckInternet(getApplicationContext());
        // Bundle b=getIntent().getExtras();
       //  itemid=b.getLong("ItemId");
        // mobnum=b.getLong("MobNum");
