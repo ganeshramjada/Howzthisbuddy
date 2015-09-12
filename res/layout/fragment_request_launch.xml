@@ -37,6 +37,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
             android:drawableEnd="@android:drawable/ic_menu_search"
             android:drawableRight="@android:drawable/ic_menu_search"
             android:hint="@string/str_received_search_hint"
