@@ -9,9 +9,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="160dp"
         android:orientation="horizontal"
-        android:weightSum="2" >
+        android:weightSum="2"
+        android:layout_marginBottom="3dp" >
 
         <LinearLayout
             android:layout_width="0dp"
@@ -22,17 +23,19 @@
 
             <ImageView
                 android:id="@+id/img_product_detail_picture"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_gravity="start"
-                android:src="@drawable/shoe_big" />
+                android:src="@drawable/shoe_big"
+                android:background="@drawable/img_background" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:layout_weight="1"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:layout_marginLeft="3dp" >
 
             <TextView
                 android:id="@+id/txt_product_detail_name"
@@ -49,7 +52,7 @@
                 android:text="Product ID:X233343434"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
                 android:textColor="#5A5A5A" 
-                android:visibility="invisible"/>
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/txt_product_detail_product_description"
@@ -58,6 +61,7 @@
                 android:layout_marginBottom="5dp"
                 android:lines="3"
                 android:maxLines="3"
+                android:layout_marginTop="3dp"
                 android:text="The jumba shoes look like fun but means business Wear it byself more>"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
                 android:textColor="#5A5A5A" />
@@ -70,12 +74,22 @@
                 android:drawableLeft="@drawable/camera"
                 android:drawableStart="@drawable/camera"
                 android:gravity="center"
+                android:layout_marginTop="3dp"
                 android:paddingBottom="2dp"
                 android:paddingEnd="5dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
                 android:text=" Capture Selfie"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
+        <TextView
+                android:id="@+id/txt_product_detail_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/color_button_bg"
+                android:padding="5dp"
+                android:layout_marginTop="3dp"
+                android:text="Now: $49.99"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
         </LinearLayout>
     </LinearLayout>
@@ -84,7 +98,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="2" >
+        android:weightSum="2" 
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -211,14 +226,7 @@
                 android:visibility="gone"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
 
-            <TextView
-                android:id="@+id/txt_product_detail_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/color_button_bg"
-                android:padding="5dp"
-                android:text="Now: $49.99"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
+            
         </LinearLayout>
     </LinearLayout>
 
