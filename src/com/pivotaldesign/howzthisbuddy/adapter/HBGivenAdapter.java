@@ -28,6 +28,7 @@ public class HBGivenAdapter extends ArrayAdapter<HBGiven> {
 	private Typeface _typefaceRegular = null;
 	private AppUtilities au=new AppUtilities(_context);
 	
+	
 	public HBGivenAdapter(Context context, HBGiven[] given) {
 		super(context, R.layout.layout_given_list_item, given);
 		this._context = context;
