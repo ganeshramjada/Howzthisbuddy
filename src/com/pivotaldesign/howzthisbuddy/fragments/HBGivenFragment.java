@@ -28,6 +28,8 @@ import com.pivotaldesign.howzthisbuddy.util.AppUtilities;
 import com.pivotaldesign.howzthisbuddy.util.CheckInternet;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -139,7 +141,16 @@ public class HBGivenFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == 101) {
-			_notifier.notifier(1);
+			//_notifier.notifier(1);
+			FragmentManager fm = getFragmentManager();
+
+			FragmentTransaction ft = fm.beginTransaction();
+
+			HBResponseFragment llf = new HBResponseFragment(_notifier);
+
+			ft.replace(R.id.frame_container, llf);
+
+			ft.commit();
 		}
 	}
 
