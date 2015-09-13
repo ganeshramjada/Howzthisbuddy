@@ -323,6 +323,8 @@ else{
 
 						String phonenumber=c.getString("phoneNumber");
 						String profilepic=c.getString("profilePic");
+						String downloadpic=c.getString("profilePicS3Url");
+						int picversion=c.getInt("pictureVersion");
 						editor.putString(phonenumber, profilepic);
 						String name=au.getContactName(getApplicationContext(), phonenumber);
 						list_response_numbers.add(phonenumber);
@@ -330,6 +332,8 @@ else{
 						rcib=new ResponseContactInfBO();
 						rcib.setName(name);
 						rcib.setPhonenum(phonenumber);
+						rcib.setProfilePicS3Url(downloadpic);
+						rcib.setDownloadIndicator(picversion);
 						al_rcib.add(rcib);
 					}
 					 editor.commit();
