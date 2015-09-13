@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pivotaldesign.howzthisbuddy.R;
@@ -37,6 +38,7 @@ public class HBGivenAdapter extends ArrayAdapter<HBGiven> {
 	private static class ViewHolder
 	{
 		TextView txtGivenName, txtGivenCount, txtPendingCount;
+		ImageView iv_img_opinion_given_profile;
 	}
 	
 	ViewHolder holder = null;
@@ -47,10 +49,12 @@ public class HBGivenAdapter extends ArrayAdapter<HBGiven> {
 			LayoutInflater vi = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = vi.inflate(R.layout.layout_given_list_item, null);
 			
+			
 			holder = new  ViewHolder();
 			holder.txtGivenName = (TextView) convertView.findViewById(R.id.txt_opinion_given_name);
 			holder.txtGivenCount = (TextView) convertView.findViewById(R.id.txt_opinion_given_given_count);
 			holder.txtPendingCount = (TextView) convertView.findViewById(R.id.txt_opinion_given_pending_count);
+			holder.iv_img_opinion_given_profile=(ImageView)convertView.findViewById(R.id.img_opinion_given_profile);
 				
 			holder.txtGivenName.setTypeface(_typefaceRegular);
 			holder.txtGivenCount.setTypeface(_typefaceRegular);
