@@ -19,6 +19,8 @@ import com.pivotaldesign.howzthisbuddy.util.HBCustomShapeDrawable;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -102,7 +104,7 @@ public class HBResponseFragment extends Fragment implements OnClickListener{
         
         TextView tv_txt_product_detail_name=(TextView) rootView.findViewById(R.id.txt_product_detail_name);
         tv_txt_product_detail_name.setTypeface(HBApplication.getInstance().getRegularFont());
-        if(!hbgf.opi_giv_det_bo.getOpinionsPending().get(pos).getItemBO().getItemTitle().toString().equalsIgnoreCase("")){
+        if(!hbgf.opi_giv_det_bo.getOpinionsPending().get(pos).getItemBO().getItemTitle().toString().equalsIgnoreCase("null")){
         tv_txt_product_detail_name.setText(hbgf.opi_giv_det_bo.getOpinionsPending().get(pos).getItemBO().getItemTitle());
         }else{
             tv_txt_product_detail_name.setText("");
@@ -324,6 +326,15 @@ public class HBResponseFragment extends Fragment implements OnClickListener{
 				}else{
 					Toast.makeText(getActivity(),"Opinion not updated", Toast.LENGTH_SHORT).show();
 				}
+			FragmentManager fm = getFragmentManager();
+
+			FragmentTransaction ft = fm.beginTransaction();
+
+			HBGivenFragment llf = new HBGivenFragment(_notifier);
+
+			ft.replace(R.id.frame_container, llf);
+
+			ft.commit();
 			
 		}
 	}

@@ -61,6 +61,7 @@ public class HBGivenFragment extends Fragment {
     private HashMap<String,String> hbgf_hm_givenfragment_req_params;
     private String number;
     private String hbgf_str_resp_givenfragment;
+    
     private ListView listGivenBuddy;
     private JSONArray hbgf_ja_resp=null;
     private String listdetail;
