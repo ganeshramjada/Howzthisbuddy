@@ -16,9 +16,10 @@
         <ImageView
             android:id="@+id/img_opinion_received_list_item_picture"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="140dp"
             android:layout_margin="5dp"
             android:layout_weight=".8"
+            android:background="@drawable/img_background"
             android:src="@drawable/shoe_big" />
 
         <LinearLayout
@@ -41,6 +42,7 @@
                 android:layout_marginBottom="5dp"
                 android:lines="3"
                 android:maxLines="3"
+                android:ellipsize="end"
                 android:text="The jumba shoes look like fun but means business Wear it byself more>"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
                 android:textColor="#B1B1B1" />
@@ -54,6 +56,7 @@
                 android:layout_marginBottom="5dp"
                 android:gravity="center"
                 android:paddingBottom="2dp"
+                android:layout_marginTop="3dp"
                 android:paddingEnd="5dp"
                 android:paddingLeft="3dp"
                 android:paddingRight="5dp"
