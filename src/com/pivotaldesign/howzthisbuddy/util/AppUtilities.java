@@ -192,7 +192,7 @@ public class AppUtilities {
 							// phoneNumber=phoneNumber.startsWith("0")?
 							// phoneNumber.substring(1) : phoneNumber;
 
-							numbers.add(((phoneNumber.replaceAll("\\+", "")).replaceAll("-", "")).replaceAll(" ", ""));
+							numbers.add(((phoneNumber.replaceAll("\\+", "")).replaceAll("-", "")).replaceAll(" ", "").replaceAll("\\(", "").replaceAll("\\)",""));
 						}
 						System.out.println(numbers.toString());
 						output.append("\n Phone number:" + phoneNumber);
